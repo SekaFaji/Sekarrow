@@ -36,7 +36,7 @@ export function SettingsOverlay({
         >
           ⚙ SETTINGS
         </div>
-        <div role="tablist" aria-label="Settings sections" className="grid grid-cols-3 gap-1 py-2">
+        <div role="group" aria-label="Settings sections" className="grid grid-cols-3 gap-1 py-2">
           {([
             ["general", "★ GENERAL"],
             ["sound", "🔊 SOUND"],
@@ -45,8 +45,7 @@ export function SettingsOverlay({
             <button
               key={key}
               type="button"
-              role="tab"
-              aria-selected={settingsTab === key}
+              aria-pressed={settingsTab === key}
               onClick={() => setSettingsTab(key)}
               className="min-h-[44px] min-w-0 border-2 border-black px-1 py-2 text-[9px] leading-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
               style={{
