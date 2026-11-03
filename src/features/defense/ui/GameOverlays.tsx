@@ -14,10 +14,10 @@ export function PauseOverlay({ onResume, onMainMenu }: {
       style={{ zIndex: 50 }}
     >
       <div className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-3 overflow-x-hidden overflow-y-auto border-4 border-black bg-[#1c2138] p-3 sm:p-4">
-        <div className="text-center text-sm text-[#ffd24a]" style={{ textShadow: "0 2px 0 #000" }}>
+        <div className="text-center text-[12px] text-[#ffd24a]" style={{ textShadow: "0 2px 0 #000" }}>
           ⏸ PAUSED
         </div>
-        <p className="text-center text-[10px] leading-[18px] text-white/75">
+        <p className="text-center text-[8px] leading-[15px] text-white/75">
           The siege holds its breath - enemies, turrets and arrows all wait for you.
         </p>
         <PixButton color="#4caf50" onClick={onResume}>▶ RESUME</PixButton>
@@ -38,10 +38,10 @@ export function ConfirmQuitOverlay({ onKeepDefending, onQuitToMenu }: {
       style={{ zIndex: 52 }}
     >
       <div className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-3 overflow-x-hidden overflow-y-auto border-4 border-black bg-[#1c2138] p-3 sm:p-4">
-        <div className="text-center text-sm text-[#ff8fa3]" style={{ textShadow: "0 2px 0 #000" }}>
+        <div className="text-center text-[12px] text-[#ff8fa3]" style={{ textShadow: "0 2px 0 #000" }}>
           ⚠ LEAVE THIS RUN?
         </div>
-        <p className="text-center text-[10px] leading-[18px] text-white/80">
+        <p className="text-center text-[8px] leading-[15px] text-white/80">
           Quitting to the main menu will lose your current run - score, gold, upgrades
           and wave progress from this siege are gone for good.
         </p>
@@ -69,11 +69,11 @@ export function ArmoryOverlay({ meta, buyMeta, onClose }: {
         aria-modal="true"
         aria-label="The armory"
       >
-        <div className="shrink-0 text-center text-sm text-[#ffd24a]" style={{ textShadow: "0 2px 0 #000" }}>
+        <div className="shrink-0 text-center text-[12px] text-[#ffd24a]" style={{ textShadow: "0 2px 0 #000" }}>
           ◆ THE ARMORY
         </div>
-        <div className="shrink-0 text-center text-[10px] text-[#ffd24a]">◆ {meta.gold} META GOLD</div>
-        <p className="shrink-0 text-center text-[9px] leading-[17px] text-white/75">
+        <div className="shrink-0 text-center text-[9px] text-[#ffd24a]">◆ {meta.gold} META GOLD</div>
+        <p className="shrink-0 text-center text-[8px] leading-[15px] text-white/75">
           Score from every run converts to meta gold. These upgrades are permanent.
         </p>
         <div className="scrollbox flex min-h-0 min-w-0 flex-1 flex-col gap-2 overflow-x-hidden overflow-y-auto overscroll-contain border-2 border-black bg-[#262b44] p-2">
