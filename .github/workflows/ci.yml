@@ -54,4 +54,5 @@ jobs:
         with:
           name: Sekarrow-Dropin-Patch
           path: patch/
+          include-hidden-files: true
           if-no-files-found: error
