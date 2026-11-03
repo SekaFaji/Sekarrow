@@ -45,7 +45,7 @@ The `tests/` directory contains regression coverage for input mapping, wave star
 ## Controls
 
 - **Hold and drag** in the battlefield to aim and fire arrows.
-- **Shop / Upgrades** to browse purchases; opening panels pauses combat.
+- **Shop / Upgrades** to browse purchases; opening panels pauses combat. Green-bordered upgrades purchase immediately when tapped; selecting one also reveals its description below the tile grid.
 - **Next wave** after clearing the current wave.
 - **Pause** to interrupt a run.
 
@@ -65,6 +65,7 @@ src/
 │   ├── upgrades/permanentPurchases.ts  # Persistent shop transactions
 │   ├── ui/GameOverlays.tsx    # Pause, quit and armory overlays
 │   ├── ui/SettingsPanels.tsx  # Settings and privacy panels
+│   ├── ui/UpgradePanel.tsx   # Responsive in-run purchase panel
 │   └── world/                # Memoized stationary scenery and structures
 ├── game/
 │   ├── types.ts                # Game types
@@ -84,7 +85,7 @@ The app uses **React, TypeScript, Vite and Tailwind CSS**, with a custom simulat
 
 ## Project status
 
-**Playable prototype / architecture refactor.** This is an independent learning and portfolio project by SekaFaji Games. The architecture has been modularized in stages; stationary scenery and settings panels are now isolated, although the main gameplay feature remains large and UI-heavy. Focused regression tests cover core invariants, but not full gameplay or browser behavior.
+**Playable prototype / UI and architecture polish.** This is an independent learning and portfolio project by SekaFaji Games. The architecture has been modularized in stages; stationary scenery and settings panels are now isolated, although the main gameplay feature remains large and UI-heavy. Focused regression tests cover core invariants, but not full gameplay or browser behavior.
 
 The official project URL is [github.com/SekaFaji/Sekarrow](https://github.com/SekaFaji/Sekarrow), with a GitHub Pages base path of `/Sekarrow/`. Existing browser saves are migrated automatically from the former prototype's storage keys.
 
