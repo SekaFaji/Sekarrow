@@ -881,7 +881,7 @@ export default function Sekarrow() {
           )}
 
           {/* HUD — sits below the HP line */}
-          <div className="absolute top-6 left-0 right-0 flex items-start justify-between p-2 text-[10px] pointer-events-none">
+          <div className="absolute top-6 left-0 right-0 flex items-start justify-between p-2 text-[9px] pointer-events-none">
             <div className="flex flex-col gap-1">
               <div
                 className="border-2 border-black px-2 py-1"
@@ -936,7 +936,7 @@ export default function Sekarrow() {
                 className="border-2 border-black px-2 py-1 flex items-center gap-2"
                 style={{ background: "#262b44" }}
               >
-                <span className="text-[8px] text-white/60">SCORE</span>
+                <span className="text-[7px] text-white/60">SCORE</span>
                 <PixelSprite sprite={SPRITES.star} px={2} />
                 <span className="text-white">{g.score}</span>
               </div>
@@ -951,7 +951,7 @@ export default function Sekarrow() {
                   transformOrigin: "right center",
                 }}
               >
-                <span className="text-[8px] text-white/60">GOLD</span>
+                <span className="text-[7px] text-white/60">GOLD</span>
                 <PixelSprite sprite={SPRITES.coin} px={2} />
                 <span className="text-[#ffd24a]">{g.gold}</span>
               </div>
@@ -959,7 +959,7 @@ export default function Sekarrow() {
                 className="border-2 border-black px-2 py-1 flex items-center gap-2"
                 style={{ background: "#262b44" }}
               >
-                <span className="text-[8px] text-white/60">RUBIES</span>
+                <span className="text-[7px] text-white/60">RUBIES</span>
                 <span className="text-[#ff4d6d]">♦</span>
                 <span className="text-[#ff8fa3]">{meta.rubies}</span>
               </div>
@@ -969,7 +969,7 @@ export default function Sekarrow() {
                   style={{ background: "#3a2408" }}
                 >
                   <span
-                    className="text-[8px] text-[#ffd24a]"
+                    className="text-[7px] text-[#ffd24a]"
                     style={{ animation: "blink 1s infinite" }}
                   >
                     COMBO ×{g.combo} +{Math.round(Math.min(0.6, g.combo * 0.04) * 100)}% GOLD
@@ -983,7 +983,7 @@ export default function Sekarrow() {
           <div
             className="absolute top-0 left-0 right-0 flex items-center gap-2 p-1 pointer-events-none"
           >
-            <span className="text-[9px] text-white" style={{ textShadow: "0 1px 0 #000" }}>
+            <span className="text-[8px] text-white" style={{ textShadow: "0 1px 0 #000" }}>
               ♥
             </span>
             <div className="flex-1 border-2 border-black h-3" style={{ background: "#000" }}>
@@ -996,7 +996,7 @@ export default function Sekarrow() {
                 }}
               />
             </div>
-            <span className="text-[9px] text-white" style={{ textShadow: "0 1px 0 #000" }}>
+            <span className="text-[8px] text-white" style={{ textShadow: "0 1px 0 #000" }}>
               {Math.round(g.hp)}/{g.maxHp}
             </span>
             {g.shield > 0 && (
@@ -1023,11 +1023,11 @@ export default function Sekarrow() {
               }}
             >
               {waveLabel(g.wave)}
-              <div className="text-[9px] text-white/85" style={{ textShadow: "0 2px 0 #000" }}>
+              <div className="text-[8px] text-white/85" style={{ textShadow: "0 2px 0 #000" }}>
                 ENEMY POWER ×{waveScale(g.wave).hp.toFixed(2)}
               </div>
               {g.mod !== "none" && (
-                <div className="text-[9px] text-[#ff9a3d]" style={{ textShadow: "0 2px 0 #000" }}>
+                <div className="text-[8px] text-[#ff9a3d]" style={{ textShadow: "0 2px 0 #000" }}>
                   {MOD_LABELS[g.mod]}
                 </div>
               )}
@@ -1184,10 +1184,10 @@ export default function Sekarrow() {
                 >
                   SEKARROW
                 </div>
-                <div className="text-[9px] text-[#8d99ae] -mt-1">
+                <div className="text-[8px] text-[#8d99ae] -mt-1">
                   hold the line — one arrow at a time
                 </div>
-                <div className="text-[10px] text-white/80 text-center leading-5 pt-1">
+                <div className="text-[9px] text-white/80 text-center leading-[17px] pt-1">
                   ★ BEST: {best} • 🏳 TOWNS: {meta.towns}
                   <br />
                   <span className="text-[#ffd24a]">⛁ {meta.gold} gold</span> •{" "}
@@ -1240,7 +1240,7 @@ export default function Sekarrow() {
                   </PixButton>
                 </div>
                 <span
-                  className="text-[8px] text-white/40"
+                  className="text-[7px] text-white/40"
                   style={{ animation: "blink 1.2s infinite" }}
                 >
                   hold &amp; drag anywhere to aim your rain of arrows
@@ -1305,7 +1305,7 @@ export default function Sekarrow() {
               style={{ background: "#1c2138" }}
             >
               <div
-                className="text-[#ffd24a] text-base text-center"
+                className="text-[#ffd24a] text-[12px] text-center"
                 style={{ textShadow: "0 2px 0 #000" }}
               >
                 ⚔ HOW TO DEFEND THE KEEP
@@ -1323,7 +1323,7 @@ export default function Sekarrow() {
               ].map(([icon, txt]) => (
                 <div key={txt} className="flex w-full min-w-0 items-start gap-2">
                   <span className="w-5 shrink-0 text-center text-sm">{icon}</span>
-                  <span className="min-w-0 flex-1 text-[10px] text-white/85 leading-[18px]">{txt}</span>
+                  <span className="min-w-0 flex-1 text-[8px] text-white/85 leading-[15px]">{txt}</span>
                 </div>
               ))}
               <PixButton color="#4caf50" onClick={dismissHowTo}>
@@ -1368,15 +1368,15 @@ export default function Sekarrow() {
                 </PixButton>
               </div>
 
-              <div className="text-[#4caf50] text-sm" style={{ textShadow: "0 2px 0 #000" }}>
+              <div className="text-[#4caf50] text-[12px]" style={{ textShadow: "0 2px 0 #000" }}>
                 {waveLabel(g.wave)} CLEARED!
               </div>
               {g.wave % 5 === 0 && (
-                <div className="text-[9px] text-[#ff8fa3]" style={{ textShadow: "0 2px 0 #000" }}>
+                <div className="text-[8px] text-[#ff8fa3]" style={{ textShadow: "0 2px 0 #000" }}>
                   🏳 TOWN CONQUERED — permanent +2% kill gold!
                 </div>
               )}
-              <div className="text-[10px] text-[#ffd24a]">+{g.lastBonus} gold bonus</div>
+              <div className="text-[9px] text-[#ffd24a]">+{g.lastBonus} gold bonus</div>
               {/* ruby dice — every cleared wave rolls for a ruby (6 = LUCKY) */}
               {dice && dice.wave === g.wave && (
                 <div className="flex flex-col items-center gap-1">
@@ -1397,20 +1397,20 @@ export default function Sekarrow() {
                   </div>
                   {dice.settled ? (
                     dice.value === 6 ? (
-                      <div className="text-[9px] text-[#e05fd0]" style={{ textShadow: "0 2px 0 #000" }}>
+                      <div className="text-[8px] text-[#e05fd0]" style={{ textShadow: "0 2px 0 #000" }}>
                         LUCKY! +1 RUBY ♦
                       </div>
                     ) : (
-                      <div className="text-[9px] text-white/50">UNLUCKY…</div>
+                      <div className="text-[8px] text-white/50">UNLUCKY…</div>
                     )
                   ) : (
-                    <div className="text-[9px] text-white/50" style={{ animation: "blink 0.5s infinite" }}>
+                    <div className="text-[8px] text-white/50" style={{ animation: "blink 0.5s infinite" }}>
                       ROLLING…
                     </div>
                   )}
                 </div>
               )}
-              <div className="text-[9px] text-white/70 text-center leading-4">
+              <div className="text-[8px] text-white/70 text-center leading-[15px]">
                 Arrows: {g.damage} dmg • Pierce: {Math.round(g.pierce * 100)}% • Castle: {Math.round(g.hp)}/
                 {g.maxHp} HP
                 <br />
@@ -1420,7 +1420,7 @@ export default function Sekarrow() {
               </div>
               {autoNextIn > 0 && (
                 <div
-                  className="text-[9px] text-white/60"
+                  className="text-[8px] text-white/60"
                   style={{ animation: "blink 1s infinite" }}
                 >
                   next wave in {autoNextIn}s…
@@ -1460,14 +1460,14 @@ export default function Sekarrow() {
               className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-2 overflow-x-hidden overflow-y-auto border-4 border-black p-3"
               style={{ background: "#1c2138" }}
             >
-              <div className="text-[#ffd24a] text-sm" style={{ textShadow: "0 2px 0 #000" }}>
+              <div className="text-[#ffd24a] text-[12px]" style={{ textShadow: "0 2px 0 #000" }}>
                 🏚 THE COURTYARD
               </div>
-              <div className="text-[9px] text-white/75 text-center leading-[17px]">
+              <div className="text-[8px] text-white/75 text-center leading-[15px]">
                 Your town lives inside the castle walls. Buildings survive every defeat.
               </div>
-              <div className="text-[11px] text-[#ffd24a]">⛁ {meta.gold} META GOLD</div>
-              <div className="text-[9px] text-[#7be58e] text-center leading-4">{TOWN_BLDGS.filter((b) => meta[b.key] > 0).length}/{TOWN_BLDGS.length} STRUCTURES BUILT</div>
+              <div className="text-[9px] text-[#ffd24a]">⛁ {meta.gold} META GOLD</div>
+              <div className="text-[8px] text-[#7be58e] text-center leading-[14px]">{TOWN_BLDGS.filter((b) => meta[b.key] > 0).length}/{TOWN_BLDGS.length} STRUCTURES BUILT</div>
 
               {/* the courtyard scene: walled yard, keep at the top, building plots */}
               <div
@@ -1597,7 +1597,7 @@ export default function Sekarrow() {
                   );
                 })()
               ) : (
-                <div className="text-[9px] text-white/75 text-center leading-4">Select a building plot to inspect its permanent benefit and cost.</div>
+                <div className="text-[8px] text-white/75 text-center leading-[14px]">Select a building plot to inspect its permanent benefit and cost.</div>
               )}
 
               <div className="sticky bottom-0 z-10 flex w-full shrink-0 justify-center border-t-2 border-black bg-[#1c2138] px-2 pt-2 pb-1">
@@ -1643,10 +1643,10 @@ export default function Sekarrow() {
               className="flex h-[min(620px,100%)] min-h-0 w-full min-w-0 max-w-[390px] flex-col gap-2 overflow-hidden border-4 border-black p-3 sm:p-4"
               style={{ background: "#1c2138" }}
             >
-              <div className="shrink-0 text-[#ffd24a] text-sm text-center" style={{ textShadow: "0 2px 0 #000" }}>
+              <div className="shrink-0 text-[#ffd24a] text-[12px] text-center" style={{ textShadow: "0 2px 0 #000" }}>
                 ⛒ KEEP SHOP
               </div>
-              <div className="shrink-0 text-[10px] text-[#ff8fa3] text-center">♦ {meta.rubies} RUBIES</div>
+              <div className="shrink-0 text-[9px] text-[#ff8fa3] text-center">♦ {meta.rubies} RUBIES</div>
               <div className="flex shrink-0 flex-wrap gap-2 justify-center py-1">
                 <PixButton
                   small
@@ -1666,7 +1666,7 @@ export default function Sekarrow() {
               <div className="scrollbox flex min-h-0 min-w-0 flex-1 flex-col items-center gap-2 overflow-x-hidden overflow-y-auto overscroll-contain border-4 border-black px-2 py-2" style={{ background: "#262b44" }}>
                 {shopTab === "rubies" ? (
                   <>
-                    <p className="min-w-0 text-center text-[9px] leading-[17px] text-white/80">
+                    <p className="min-w-0 text-center text-[8px] leading-[15px] text-white/80">
                       Packs are free while we test — they will cost real money at launch.
                       No payment is charged. Bosses also drop rubies.
                     </p>
@@ -1683,7 +1683,7 @@ export default function Sekarrow() {
                   </>
                 ) : (
                   <>
-                    <p className="min-w-0 text-center text-[9px] leading-[17px] text-white/80">
+                    <p className="min-w-0 text-center text-[8px] leading-[15px] text-white/80">
                       Permanent unlocks paid in rubies — yours forever.
                     </p>
                     {PERKS.map((p) => {
@@ -1738,10 +1738,10 @@ export default function Sekarrow() {
         {phase === "gameover" && (
           <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/85 p-2 sm:p-4">
             <div className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-3 overflow-x-hidden overflow-y-auto border-4 border-black bg-[#1c2138] p-3 text-center">
-              <div className="text-[#d9433b] text-base" style={{ textShadow: "0 3px 0 #000" }}>
+              <div className="text-[#d9433b] text-[12px]" style={{ textShadow: "0 3px 0 #000" }}>
                 THE KEEP HAS FALLEN
               </div>
-              <div className="text-[10px] text-white/85 leading-5">
+              <div className="text-[9px] text-white/85 leading-[17px]">
                 You held until {waveLabel(g.wave)}
                 <br />
                 Score: {g.score}
@@ -1787,7 +1787,7 @@ export default function Sekarrow() {
         )}
       </div>
 
-      <p className="hidden sm:block text-[8px] text-white/40 text-center max-w-[380px] leading-4">
+      <p className="hidden sm:block text-[7px] text-white/40 text-center max-w-[380px] leading-4">
         arrows carry on past your aim • red arrows = distance crits (2× range) • crits deal ×2 •
         boss every 5th wave • the map widens every level — FORTIFY grows your keep
       </p>
