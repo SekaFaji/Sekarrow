@@ -41,7 +41,8 @@ test("siege upgrade panel has clear navigation and a persistent detail area", ()
   const markup = panel([item()], "power");
   assert.match(markup, /role="dialog"/);
   assert.match(markup, /aria-modal="true"/);
-  assert.match(markup, /role="tablist"/);
+  assert.match(markup, /aria-label="Upgrade branches"/);
+  assert.match(markup, /aria-pressed="true"/);
   assert.match(markup, /BOW DEFENSES/);
   assert.match(markup, /CLOSE UPGRADES/);
   assert.match(markup, /Stronger arrows make each shot deal more damage/);
