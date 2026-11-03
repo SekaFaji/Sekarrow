@@ -22,6 +22,7 @@ import { createUpgradeShop } from "./upgrades/upgradeShop";
 import { createPermanentPurchases } from "./upgrades/permanentPurchases";
 import { PauseOverlay, ConfirmQuitOverlay, ArmoryOverlay } from "./ui/GameOverlays";
 import { SettingsOverlay, PrivacyOverlay } from "./ui/SettingsPanels";
+import { menuFadeAnimation } from "./ui/menuTransition";
 import { UpgradePanel } from "./ui/UpgradePanel";
 import { WorldTerrain } from "./world/WorldTerrain";
 import { FortressDecor, MoatDecor, WormDecor } from "./world/FortressDecor";
@@ -1067,7 +1068,7 @@ export default function Sekarrow() {
             className="absolute inset-0 overflow-hidden"
             style={{
               background: "linear-gradient(#0b0e1e 0%, #131a38 55%, #232a52 100%)",
-              animation: "fadein 0.7s ease-out 2.6s both",
+              animation: menuFadeAnimation(splash),
             }}
           >
             {/* living night scene: stars (slow sway), shooting stars, drifting moon, clouds, the keep, pines */}
