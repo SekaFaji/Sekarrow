@@ -1,10 +1,11 @@
 import React from "react";
 import { PixButton } from "./PixButton";
 
-/* one uniform card per upgrade: icon + name + description on the left,
-   the price and the BUY button stacked on the RIGHT side of the card.
-   every card is the same width and min-height, no matter how long the text is.
-   text always wraps INSIDE its own box — it can never overflow the card. */
+/**
+ * Shared upgrade card used by the shop, armory, settings and courtyard.
+ * On phones the action sits beneath the description so neither column
+ * collapses to the point of clipping words. Desktop retains the side action.
+ */
 export function UpgradeCard({
   icon,
   name,
@@ -28,34 +29,35 @@ export function UpgradeCard({
 }) {
   return (
     <div
-      className="w-full border-2 border-black flex items-stretch"
+      className="sekarrow-upgrade-card flex w-full min-w-0 flex-col items-stretch border-2 border-black sm:flex-row"
       style={{ background: "#202642", minHeight: 108 }}
     >
-      <div className="flex-1 min-w-0 overflow-hidden px-2 pt-1.5 pb-2">
-        <div className="flex items-start gap-2 min-w-0">
-          <span className="text-sm leading-4 shrink-0">{icon}</span>
-          <span className="text-[10px] text-white leading-[17px] flex-1 min-w-0 break-words">
+      <div className="min-w-0 flex-1 px-3 py-2">
+        <div className="flex min-w-0 items-start gap-2">
+          <span className="shrink-0 text-sm leading-4" aria-hidden="true">{icon}</span>
+          <span className="min-w-0 flex-1 text-[10px] leading-[18px] text-white [overflow-wrap:anywhere]">
             {name}
           </span>
         </div>
-        <div className="pt-1 text-[9px] text-white/75 leading-[17px] break-words">{desc}</div>
+        <div className="pt-1 text-[9px] leading-[17px] text-white/80 [overflow-wrap:anywhere]">
+          {desc}
+        </div>
       </div>
       <div
-        className="border-l-2 border-black px-1.5 py-1.5 flex flex-col items-center justify-center gap-1 shrink-0"
-        style={{ background: "#1a1f33", minWidth: 108, maxWidth: 126 }}
+        className="flex w-full min-w-0 shrink-0 flex-row items-center justify-between gap-2 border-t-2 border-black bg-[#1a1f33] px-2 py-1.5 sm:w-[114px] sm:flex-col sm:justify-center sm:border-l-2 sm:border-t-0"
       >
         {locked ? (
-          <span className="text-[10px] text-[#ffd76e] text-center leading-4 break-words py-1">
+          <span className="min-w-0 text-center text-[10px] leading-4 text-[#ffd76e] [overflow-wrap:anywhere]">
             🔒 {locked}
           </span>
         ) : done ? (
-          <span className="text-[10px] text-[#7be58e] text-center leading-4 break-words py-1">
+          <span className="min-w-0 text-center text-[10px] leading-4 text-[#7be58e] [overflow-wrap:anywhere]">
             ✓ {done}
           </span>
         ) : (
           <>
             {cost !== "" && (
-              <span className="text-[10px] text-[#ffd76e] leading-4 text-center break-words">
+              <span className="min-w-0 text-center text-[10px] leading-4 text-[#ffd76e] [overflow-wrap:anywhere]">
                 {cost}
               </span>
             )}
@@ -68,5 +70,3 @@ export function UpgradeCard({
     </div>
   );
 }
-
-
