@@ -29,33 +29,33 @@ export function UpgradeCard({
   return (
     <div
       className="w-full border-2 border-black flex items-stretch"
-      style={{ background: "#202642", minHeight: 96 }}
+      style={{ background: "#202642", minHeight: 108 }}
     >
       <div className="flex-1 min-w-0 overflow-hidden px-2 pt-1.5 pb-2">
         <div className="flex items-start gap-2 min-w-0">
           <span className="text-sm leading-4 shrink-0">{icon}</span>
-          <span className="text-[9px] text-white leading-4 flex-1 min-w-0 break-words">
+          <span className="text-[10px] text-white leading-[17px] flex-1 min-w-0 break-words">
             {name}
           </span>
         </div>
-        <div className="pt-1 text-[8px] text-white/55 leading-4 break-words">{desc}</div>
+        <div className="pt-1 text-[9px] text-white/75 leading-[17px] break-words">{desc}</div>
       </div>
       <div
-        className="border-l-2 border-black px-2 py-1.5 flex flex-col items-center justify-center gap-1 shrink-0"
-        style={{ background: "#1a1f33", minWidth: 84, maxWidth: 104 }}
+        className="border-l-2 border-black px-1.5 py-1.5 flex flex-col items-center justify-center gap-1 shrink-0"
+        style={{ background: "#1a1f33", minWidth: 108, maxWidth: 126 }}
       >
         {locked ? (
-          <span className="text-[9px] text-[#ffd76e] text-center leading-4 break-words py-1">
+          <span className="text-[10px] text-[#ffd76e] text-center leading-4 break-words py-1">
             🔒 {locked}
           </span>
         ) : done ? (
-          <span className="text-[9px] text-[#4caf50] text-center leading-4 break-words py-1">
+          <span className="text-[10px] text-[#7be58e] text-center leading-4 break-words py-1">
             ✓ {done}
           </span>
         ) : (
           <>
             {cost !== "" && (
-              <span className="text-[8px] text-[#ffd76e] leading-3 text-center break-words">
+              <span className="text-[10px] text-[#ffd76e] leading-4 text-center break-words">
                 {cost}
               </span>
             )}
