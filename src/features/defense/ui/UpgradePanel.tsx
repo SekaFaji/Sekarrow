@@ -31,12 +31,12 @@ export function UpgradePanel({
   const readyCount = visible.filter((upgrade) => upgrade.buyable).length;
 
   return (
-    <div className="absolute inset-0 z-[44] flex items-center justify-center bg-black/90 p-2 sm:p-4">
+    <div className="sekarrow-modal absolute inset-0 z-[44] flex min-h-0 items-center justify-center bg-black/90 p-2 sm:p-4">
       <section
         role="dialog"
         aria-modal="true"
         aria-label="Siege upgrades"
-        className="scrollbox flex h-[min(630px,96%)] min-h-0 w-full max-w-[420px] flex-col gap-2 overflow-y-auto border-4 border-black bg-[#1c2138] p-2 sm:p-3 shadow-[0_6px_0_#000]"
+        className="scrollbox flex h-[min(680px,100%)] min-h-0 min-w-0 w-full max-w-[420px] flex-col gap-2 overflow-x-hidden overflow-y-auto border-4 border-black bg-[#1c2138] p-2 sm:p-3 shadow-[0_6px_0_#000]"
       >
         <header className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-2">
           <h2 className="text-[13px] text-[#f7a41d]" style={{ textShadow: "0 2px 0 #000" }}>
@@ -109,7 +109,7 @@ export function UpgradePanel({
                   }}
                 >
                   <span className="text-lg leading-5" aria-hidden="true">{upgrade.lockTxt ? "🔒" : upgrade.icon}</span>
-                  <span className="w-full break-words text-[9px] leading-[14px] text-white">{upgrade.short}</span>
+                  <span className="w-full min-w-0 text-[9px] leading-[15px] text-white [overflow-wrap:anywhere]">{upgrade.short}</span>
                   <span
                     className="text-[8px] leading-3"
                     style={{ color: upgrade.done ? "#7be58e" : upgrade.lockTxt ? "#d3b76c" : upgrade.buyable ? "#7be58e" : "#aab2cb" }}
@@ -124,7 +124,7 @@ export function UpgradePanel({
         </div>
 
         <div
-          className="min-h-[92px] shrink-0 border-2 border-black bg-[#181d2f] px-3 py-2"
+          className="min-h-[92px] min-w-0 shrink-0 border-2 border-black bg-[#181d2f] px-3 py-2"
           aria-live="polite"
         >
           {selected ? (
