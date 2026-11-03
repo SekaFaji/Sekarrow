@@ -64,6 +64,15 @@ The screen component is **still large** and includes menu orchestration, the cou
 - Reusable pixel buttons and upgrade cards have larger tap targets and more readable labels. The viewport no longer disables browser zoom. A full browser/device layout check is still recommended.
 - Ruby-pack UI explicitly describes free testing packs, without changing the existing test-only grant behavior.
 
+## Phone stage and menu containment (mobile layout fix)
+
+- The battlefield fills the available phone viewport. At widths of 640px or more, `src/index.css` constrains it to a centered 9:16 portrait frame, up to 430px wide. The existing pointer-to-field coordinate mapping uses the actual field rectangle, so controls remain aligned at both sizes.
+- Dialogs use a `sekarrow-modal` text-wrapping boundary. Narrow panels cannot force long pixel-font labels outside the game field, and short screens scroll the content rather than clipping it.
+- `touch-action: none` is applied to the interactive battlefield layer rather than the parent field; modal pointers are ignored by `defenseInput.ts` so swiping a scrollable menu does not aim or fire.
+- Shared upgrade cards stack their purchase buttons below the descriptions on phones; their existing horizontal layout remains on larger screens.
+- The shop and armory keep their close buttons outside their scroll lists. The courtyard keeps its map height and uses a sticky close action. Between-wave menu buttons wrap instead of exceeding panel width.
+- This patch does not change the simulation, upgrades, save keys, or game progression. Verify actual viewport layouts on a narrow phone and a short landscape screen in addition to CI.
+
 ## Changes requiring care
 
 - Any future save-key or schema changes must preserve existing progress and be tested as migrations.

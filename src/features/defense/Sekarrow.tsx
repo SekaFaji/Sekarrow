@@ -327,7 +327,7 @@ export default function Sekarrow() {
 
   return (
     <div
-      className="w-full flex flex-col items-center justify-center gap-3 select-none overflow-hidden"
+      className="box-border w-full flex flex-col items-center justify-center gap-0 sm:gap-2 select-none overflow-hidden"
       style={{
         height: "100dvh",
         padding:
@@ -387,16 +387,15 @@ export default function Sekarrow() {
         onPointerUp={endHold}
         onPointerCancel={endHold}
         onPointerLeave={endHold}
-        className="relative w-full flex-1 min-h-0 sm:flex-none sm:max-w-[430px] sm:aspect-[3/4] overflow-hidden border-4 border-black cursor-crosshair"
+        className="sekarrow-field relative w-full flex-1 min-h-0 max-w-[430px] overflow-hidden border-2 sm:border-4 border-black cursor-crosshair"
         style={{
           background: "linear-gradient(#1b1f4b 0%, #2a2358 45%, #5b2f63 75%, #7a3b5e 100%)",
           boxShadow: "0 6px 0 #000",
-          touchAction: "none",
         }}
       >
         <div
           className="absolute inset-0"
-          style={{ transform: `translate(${shakeX}px, ${shakeY}px)` }}
+          style={{ transform: `translate(${shakeX}px, ${shakeY}px)`, touchAction: "none" }}
         >
           {/* stars & moon */}
           {stars.map((s, i) => (
@@ -1171,9 +1170,9 @@ export default function Sekarrow() {
                 </div>
               ))}
             </div>
-            <div className="absolute inset-0 flex items-center justify-center p-4">
+            <div className="sekarrow-modal absolute inset-0 flex items-center justify-center p-2 sm:p-4">
               <div
-                className="scrollbox flex flex-col items-center gap-2 sm:gap-3 border-4 border-black p-4 sm:p-6 max-w-[340px] w-full max-h-[94%] overflow-y-auto"
+                className="scrollbox flex min-w-0 flex-col items-center gap-2 sm:gap-3 border-4 border-black p-3 sm:p-6 max-w-[390px] w-full max-h-full overflow-x-hidden overflow-y-auto"
                 style={{
                   background: "rgba(20,24,44,0.92)",
                   animation: "floaty 4s ease-in-out infinite",
@@ -1197,7 +1196,7 @@ export default function Sekarrow() {
                 <PixButton color="#4caf50" onClick={playPressed}>
                   ▶ PLAY
                 </PixButton>
-                <div className="flex flex-wrap gap-2 justify-center">
+                <div className="flex w-full min-w-0 flex-wrap gap-2 justify-center">
                   <PixButton
                     small
                     color="#8d6742"
@@ -1300,9 +1299,9 @@ export default function Sekarrow() {
 
         {/* ----- how to play: shown the first time the player presses PLAY ----- */}
         {showHowTo && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/90 p-4">
+          <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4">
             <div
-              className="flex flex-col items-center gap-3 border-4 border-black p-4 max-w-[320px] w-full max-h-[94%] overflow-y-auto"
+              className="scrollbox flex min-w-0 flex-col items-center gap-3 border-4 border-black p-3 sm:p-4 max-w-[390px] w-full max-h-full overflow-x-hidden overflow-y-auto"
               style={{ background: "#1c2138" }}
             >
               <div
@@ -1322,9 +1321,9 @@ export default function Sekarrow() {
                 ["⚔", "From wave 3, every wave rolls a MODIFIER (SIEGE, SWIFT, BOUNTY…) — read the banner and adapt!"],
                 ["⚒️", "Between waves, spend gold in UPGRADES: arrows, shields, turrets, archers & worms"],
               ].map(([icon, txt]) => (
-                <div key={txt} className="w-full flex items-start gap-2">
-                  <span className="text-sm w-5 text-center">{icon}</span>
-                  <span className="text-[9px] text-white/85 leading-4">{txt}</span>
+                <div key={txt} className="flex w-full min-w-0 items-start gap-2">
+                  <span className="w-5 shrink-0 text-center text-sm">{icon}</span>
+                  <span className="min-w-0 flex-1 text-[10px] text-white/85 leading-[18px]">{txt}</span>
                 </div>
               ))}
               <PixButton color="#4caf50" onClick={dismissHowTo}>
@@ -1335,13 +1334,13 @@ export default function Sekarrow() {
         )}
 
         {phase === "intermission" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/85 p-4">
+          <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/85 p-2 sm:p-4">
             <div
-              className="flex flex-col items-center gap-3 border-4 border-black p-4 max-w-[300px] w-full max-h-[94%] overflow-y-auto"
+              className="scrollbox flex min-w-0 flex-col items-center gap-3 border-4 border-black p-3 sm:p-4 max-w-[390px] w-full max-h-full overflow-x-hidden overflow-y-auto"
               style={{ background: "#262b44" }}
             >
               {/* shop / upgrades — buttons at the top left */}
-              <div className="flex gap-2 self-start w-full">
+              <div className="flex w-full min-w-0 flex-wrap items-center justify-center gap-2">
                 <PixButton
                   small
                   color={tab === "shop" ? "#ffd24a" : "#8d99ae"}
@@ -1454,11 +1453,11 @@ export default function Sekarrow() {
         {/* ----- the courtyard: your persistent town inside the castle walls ----- */}
         {showTown && (
           <div
-            className="absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4"
+            className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4"
             style={{ zIndex: 47 }}
           >
             <div
-              className="scrollbox flex w-full max-w-[390px] max-h-[96%] flex-col items-center gap-2 overflow-y-auto border-4 border-black p-3"
+              className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-2 overflow-x-hidden overflow-y-auto border-4 border-black p-3"
               style={{ background: "#1c2138" }}
             >
               <div className="text-[#ffd24a] text-sm" style={{ textShadow: "0 2px 0 #000" }}>
@@ -1472,7 +1471,7 @@ export default function Sekarrow() {
 
               {/* the courtyard scene: walled yard, keep at the top, building plots */}
               <div
-                className="relative w-full border-4 border-black overflow-hidden"
+                className="relative w-full min-w-0 shrink-0 border-4 border-black overflow-hidden"
                 style={{ height: 180, background: "#2c4a26" }}
               >
                 <div
@@ -1601,15 +1600,17 @@ export default function Sekarrow() {
                 <div className="text-[9px] text-white/75 text-center leading-4">Select a building plot to inspect its permanent benefit and cost.</div>
               )}
 
-              <PixButton
-                color="#d9433b"
-                onClick={() => {
-                  setShowTown(false);
-                  setSelTown(null);
-                }}
-              >
-                CLOSE
-              </PixButton>
+              <div className="sticky bottom-0 z-10 flex w-full shrink-0 justify-center border-t-2 border-black bg-[#1c2138] px-2 pt-2 pb-1">
+                <PixButton
+                  color="#d9433b"
+                  onClick={() => {
+                    setShowTown(false);
+                    setSelTown(null);
+                  }}
+                >
+                  CLOSE
+                </PixButton>
+              </div>
             </div>
           </div>
         )}
@@ -1637,16 +1638,16 @@ export default function Sekarrow() {
         {showPrivacy && <PrivacyOverlay onBack={() => setShowPrivacy(false)} />}
 
         {(tab === "shop" || menuShop) && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/90 p-4">
+          <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4">
             <div
-              className="flex flex-col border-4 border-black p-4 max-w-[300px] w-full max-h-[94%]"
+              className="flex h-[min(620px,100%)] min-h-0 w-full min-w-0 max-w-[390px] flex-col gap-2 overflow-hidden border-4 border-black p-3 sm:p-4"
               style={{ background: "#1c2138" }}
             >
-              <div className="text-[#ffd24a] text-sm text-center" style={{ textShadow: "0 2px 0 #000" }}>
+              <div className="shrink-0 text-[#ffd24a] text-sm text-center" style={{ textShadow: "0 2px 0 #000" }}>
                 ⛒ KEEP SHOP
               </div>
-              <div className="text-[10px] text-[#ff8fa3] text-center">♦ {meta.rubies} RUBIES</div>
-              <div className="flex gap-2 justify-center py-2">
+              <div className="shrink-0 text-[10px] text-[#ff8fa3] text-center">♦ {meta.rubies} RUBIES</div>
+              <div className="flex shrink-0 flex-wrap gap-2 justify-center py-1">
                 <PixButton
                   small
                   color={shopTab === "rubies" ? "#ffd24a" : "#8d99ae"}
@@ -1662,10 +1663,10 @@ export default function Sekarrow() {
                   ★ PERKS
                 </PixButton>
               </div>
-              <div className="scrollbox flex-1 min-h-0 overflow-y-auto flex flex-col items-center gap-2 py-2 px-1 border-4 border-black" style={{ background: "#262b44" }}>
+              <div className="scrollbox flex min-h-0 min-w-0 flex-1 flex-col items-center gap-2 overflow-x-hidden overflow-y-auto overscroll-contain border-4 border-black px-2 py-2" style={{ background: "#262b44" }}>
                 {shopTab === "rubies" ? (
                   <>
-                    <p className="text-[8px] text-white/50 text-center leading-4">
+                    <p className="min-w-0 text-center text-[9px] leading-[17px] text-white/80">
                       Packs are free while we test — they will cost real money at launch.
                       No payment is charged. Bosses also drop rubies.
                     </p>
@@ -1682,7 +1683,7 @@ export default function Sekarrow() {
                   </>
                 ) : (
                   <>
-                    <p className="text-[8px] text-white/50 text-center leading-4">
+                    <p className="min-w-0 text-center text-[9px] leading-[17px] text-white/80">
                       Permanent unlocks paid in rubies — yours forever.
                     </p>
                     {PERKS.map((p) => {
@@ -1703,9 +1704,11 @@ export default function Sekarrow() {
                   </>
                 )}
               </div>
-              <PixButton color="#d9433b" onClick={() => { setTab("none"); setMenuShop(false); }}>
-                CLOSE
-              </PixButton>
+              <div className="flex shrink-0 justify-center pt-1">
+                <PixButton color="#d9433b" onClick={() => { setTab("none"); setMenuShop(false); }}>
+                  CLOSE
+                </PixButton>
+              </div>
             </div>
           </div>
         )}
@@ -1733,8 +1736,8 @@ export default function Sekarrow() {
         )}
 
         {phase === "gameover" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/85 p-4">
-            <div className="flex flex-col items-center gap-4 text-center">
+          <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/85 p-2 sm:p-4">
+            <div className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-3 overflow-x-hidden overflow-y-auto border-4 border-black bg-[#1c2138] p-3 text-center">
               <div className="text-[#d9433b] text-base" style={{ textShadow: "0 3px 0 #000" }}>
                 THE KEEP HAS FALLEN
               </div>

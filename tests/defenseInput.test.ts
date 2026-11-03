@@ -43,3 +43,38 @@ test("aiming starts only while playing and ends on release", () => {
   assert.equal(game.hold, null);
   assert.equal(redraws, 2);
 });
+
+test("touches inside a scrollable menu do not start or redirect arrow aiming", () => {
+  const game = makeGame();
+  const gameRef = { current: game };
+  const fieldRef = {
+    current: { getBoundingClientRect: () => ({ left: 0, top: 0, width: 100, height: 100 }) } as HTMLDivElement,
+  };
+  const play = createDefenseInputHandlers({
+    phase: "playing", gRef: gameRef, fieldRef, setTick: () => {},
+  });
+
+  let prevented = false;
+  const modalPointer = {
+    clientX: 30,
+    clientY: 40,
+    target: { closest: (selector: string) => selector === ".sekarrow-modal" ? {} : null },
+    preventDefault: () => { prevented = true; },
+  } as unknown as React.PointerEvent;
+
+  play.onFieldDown(modalPointer);
+  assert.equal(game.hold, null);
+  assert.equal(prevented, false);
+
+  const battlefieldPointer = {
+    ...modalPointer,
+    target: { closest: () => null },
+  } as React.PointerEvent;
+  play.onFieldDown(battlefieldPointer);
+  assert.deepEqual(game.hold, { x: 30, y: 40 });
+
+  play.onFieldMove({ ...modalPointer, clientX: 90 } as React.PointerEvent);
+  assert.deepEqual(game.hold, { x: 30, y: 40 });
+  play.endHold();
+  assert.equal(game.hold, null);
+});

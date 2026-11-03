@@ -13,7 +13,8 @@ The existing prototype includes:
 - Direct arrow aiming alongside automatic turrets, archers and anti-tunneler defenses.
 - Enemy variants, bosses, wave modifiers and combat effects.
 - In-run upgrades, permanent progression and a castle courtyard.
-- A responsive browser UI with locally stored progression.
+- A portrait-oriented browser UI that fills phone screens, with locally stored progression.
+- Scrolling, phone-width menus for upgrades, the shop, armory, courtyard, help, settings, and run results.
 
 These features describe the **current prototype**. The planned fortress-progression redesign is not yet included.
 

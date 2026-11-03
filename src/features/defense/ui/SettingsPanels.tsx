@@ -23,11 +23,11 @@ export function SettingsOverlay({
 }: SettingsOverlayProps) {
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center bg-black/90 p-4"
+      className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4"
       style={{ zIndex: 45 }}
     >
       <div
-        className="scrollbox flex flex-col border-4 border-black p-3 sm:p-4 max-w-[380px] w-full max-h-[96%] overflow-y-auto"
+        className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full min-h-0 flex-col overflow-x-hidden overflow-y-auto border-4 border-black p-3 sm:p-4"
         style={{ background: "#1c2138" }}
       >
         <div
@@ -36,7 +36,7 @@ export function SettingsOverlay({
         >
           ⚙ SETTINGS
         </div>
-        <div role="group" aria-label="Settings sections" className="grid grid-cols-3 gap-1 py-2">
+        <div role="group" aria-label="Settings sections" className="grid w-full min-w-0 grid-cols-3 gap-1 py-2">
           {([
             ["general", "★ GENERAL"],
             ["sound", "🔊 SOUND"],
@@ -58,7 +58,7 @@ export function SettingsOverlay({
           ))}
         </div>
         <div
-          className="scrollbox overflow-y-auto flex flex-col items-center gap-2 py-2 px-2 border-4 border-black"
+          className="scrollbox flex min-w-0 flex-col items-center gap-2 overflow-x-hidden overflow-y-auto border-4 border-black px-2 py-2"
           style={{ height: "min(280px, 46dvh)", background: "#262b44" }}
         >
           {settingsTab === "general" && (
@@ -150,11 +150,11 @@ export function SettingsOverlay({
 export function PrivacyOverlay({ onBack }: { onBack: () => void }) {
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center bg-black/90 p-4"
+      className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4"
       style={{ zIndex: 55 }}
     >
       <div
-        className="scrollbox flex flex-col border-4 border-black p-3 sm:p-4 max-w-[380px] w-full max-h-[96%] overflow-y-auto"
+        className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full min-h-0 flex-col overflow-x-hidden overflow-y-auto border-4 border-black p-3 sm:p-4"
         style={{ background: "#1c2138" }}
       >
         <div
@@ -164,7 +164,7 @@ export function PrivacyOverlay({ onBack }: { onBack: () => void }) {
           📜 PRIVACY POLICY
         </div>
         <div
-          className="scrollbox overflow-y-auto flex flex-col gap-2 py-2 px-2 border-4 border-black"
+          className="scrollbox flex min-w-0 flex-col gap-2 overflow-x-hidden overflow-y-auto border-4 border-black px-2 py-2"
           style={{ height: "min(320px, 53dvh)", background: "#262b44" }}
         >
           <p className="text-[10px] text-white/85 leading-[18px]">

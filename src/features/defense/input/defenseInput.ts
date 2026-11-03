@@ -44,8 +44,12 @@ export function createDefenseInputHandlers({ phase, gRef, fieldRef, setTick }: I
     const rect = fieldRef.current!.getBoundingClientRect();
     return pointerToFieldPercent(ev.clientX, ev.clientY, rect);
   };
+  // Aiming must not capture swipes in scrollable menus on touch devices.
+  const isMenuPointer = (ev: React.PointerEvent) =>
+    Boolean((ev.target as Element | null)?.closest?.(".sekarrow-modal"));
+
   const onFieldDown = (ev: React.PointerEvent) => {
-    if (phase !== "playing") return;
+    if (phase !== "playing" || isMenuPointer(ev)) return;
     ev.preventDefault();
     const g = gRef.current!;
     const p = pointerPos(ev);
@@ -57,7 +61,7 @@ export function createDefenseInputHandlers({ phase, gRef, fieldRef, setTick }: I
   };
   const onFieldMove = (ev: React.PointerEvent) => {
     const g = gRef.current!;
-    if (!g.hold) return;
+    if (!g.hold || isMenuPointer(ev)) return;
     const p = pointerPos(ev);
     const w = screenToWorld(p.x, p.y);
     g.hold.x = w.x;
