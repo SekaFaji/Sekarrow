@@ -35,11 +35,11 @@ export function UpgradeCard({
       <div className="min-w-0 flex-1 px-3 py-2">
         <div className="flex min-w-0 items-start gap-2">
           <span className="shrink-0 text-sm leading-4" aria-hidden="true">{icon}</span>
-          <span className="min-w-0 flex-1 text-[10px] leading-[18px] text-white [overflow-wrap:anywhere]">
+          <span className="min-w-0 flex-1 text-[9px] leading-[16px] text-white [overflow-wrap:anywhere]">
             {name}
           </span>
         </div>
-        <div className="pt-1 text-[9px] leading-[17px] text-white/80 [overflow-wrap:anywhere]">
+        <div className="pt-1 text-[8px] leading-[15px] text-white/80 [overflow-wrap:anywhere]">
           {desc}
         </div>
       </div>
@@ -47,17 +47,17 @@ export function UpgradeCard({
         className="flex w-full min-w-0 shrink-0 flex-row items-center justify-between gap-2 border-t-2 border-black bg-[#1a1f33] px-2 py-1.5 sm:w-[114px] sm:flex-col sm:justify-center sm:border-l-2 sm:border-t-0"
       >
         {locked ? (
-          <span className="min-w-0 text-center text-[10px] leading-4 text-[#ffd76e] [overflow-wrap:anywhere]">
+          <span className="min-w-0 text-center text-[9px] leading-[15px] text-[#ffd76e] [overflow-wrap:anywhere]">
             🔒 {locked}
           </span>
         ) : done ? (
-          <span className="min-w-0 text-center text-[10px] leading-4 text-[#7be58e] [overflow-wrap:anywhere]">
+          <span className="min-w-0 text-center text-[9px] leading-[15px] text-[#7be58e] [overflow-wrap:anywhere]">
             ✓ {done}
           </span>
         ) : (
           <>
             {cost !== "" && (
-              <span className="min-w-0 text-center text-[10px] leading-4 text-[#ffd76e] [overflow-wrap:anywhere]">
+              <span className="min-w-0 text-center text-[9px] leading-[15px] text-[#ffd76e] [overflow-wrap:anywhere]">
                 {cost}
               </span>
             )}

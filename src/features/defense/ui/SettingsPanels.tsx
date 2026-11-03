@@ -31,7 +31,7 @@ export function SettingsOverlay({
         style={{ background: "#1c2138" }}
       >
         <div
-          className="text-[#8d99ae] text-sm text-center"
+          className="text-[#8d99ae] text-[12px] text-center"
           style={{ textShadow: "0 2px 0 #000" }}
         >
           ⚙ SETTINGS
@@ -47,7 +47,7 @@ export function SettingsOverlay({
               type="button"
               aria-pressed={settingsTab === key}
               onClick={() => setSettingsTab(key)}
-              className="min-h-[44px] min-w-0 border-2 border-black px-1 py-2 text-[9px] leading-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
+              className="min-h-[44px] min-w-0 border-2 border-black px-1 py-2 text-[8px] leading-[14px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
               style={{
                 background: settingsTab === key ? "#ffd24a" : "#8d99ae",
                 color: "#000",
@@ -63,7 +63,7 @@ export function SettingsOverlay({
         >
           {settingsTab === "general" && (
             <>
-              <p className="text-[9px] text-white/75 text-center leading-[17px]">
+              <p className="text-[8px] text-white/75 text-center leading-[15px]">
                 Restore rubies and perks linked to this device, or read our privacy policy.
               </p>
               <UpgradeCard
@@ -75,7 +75,7 @@ export function SettingsOverlay({
                 onClick={restorePurchases}
               />
               {restoreMsg && (
-                <div className="text-[9px] text-[#4caf50] text-center">{restoreMsg}</div>
+                <div className="text-[8px] text-[#4caf50] text-center">{restoreMsg}</div>
               )}
               <UpgradeCard
                 icon="📜"
@@ -89,7 +89,7 @@ export function SettingsOverlay({
           )}
           {settingsTab === "sound" && (
             <>
-              <p className="text-[9px] text-white/75 text-center leading-[17px]">
+              <p className="text-[8px] text-white/75 text-center leading-[15px]">
                 Every beep, twang and explosion in the keep.
               </p>
               <UpgradeCard
@@ -116,19 +116,19 @@ export function SettingsOverlay({
           )}
           {settingsTab === "about" && (
             <>
-              <div className="text-[10px] text-white text-center leading-5">
+              <div className="text-[9px] text-white text-center leading-[16px]">
                 SEKARROW <span className="text-white/50">v1.0</span>
               </div>
-              <div className="text-[9px] text-[#f7a41d] text-center leading-5">
+              <div className="text-[8px] text-[#f7a41d] text-center leading-[15px]">
                 a SekaFaji Games production
               </div>
-              <div className="text-[9px] text-white/75 text-center leading-[17px]">
+              <div className="text-[8px] text-white/75 text-center leading-[15px]">
                 Design • Code • Pixels — SekaFaji Games
               </div>
-              <div className="text-[9px] text-white/65 text-center leading-[17px]">
+              <div className="text-[8px] text-white/65 text-center leading-[15px]">
                 Huge thanks to every keeper who tested the walls.
               </div>
-              <div className="text-[9px] text-white/65 text-center leading-[17px]">
+              <div className="text-[8px] text-white/65 text-center leading-[15px]">
                 ⛒ Ruby packs • ♦ Perks • 🪱 Earthworms — all in a day's siege.
               </div>
             </>
@@ -158,7 +158,7 @@ export function PrivacyOverlay({ onBack }: { onBack: () => void }) {
         style={{ background: "#1c2138" }}
       >
         <div
-          className="text-[#ffd24a] text-sm text-center"
+          className="text-[#ffd24a] text-[12px] text-center"
           style={{ textShadow: "0 2px 0 #000" }}
         >
           📜 PRIVACY POLICY
@@ -167,20 +167,20 @@ export function PrivacyOverlay({ onBack }: { onBack: () => void }) {
           className="scrollbox flex min-w-0 flex-col gap-2 overflow-x-hidden overflow-y-auto border-4 border-black px-2 py-2"
           style={{ height: "min(320px, 53dvh)", background: "#262b44" }}
         >
-          <p className="text-[10px] text-white/85 leading-[18px]">
+          <p className="text-[8px] text-white/85 leading-[15px]">
             Sekarrow is built by SekaFaji Games. We do not collect, store, or share any
             personal data.
           </p>
-          <p className="text-[10px] text-white/85 leading-[18px]">
+          <p className="text-[8px] text-white/85 leading-[15px]">
             Your progress, gold, and rubies live only on your device (local storage). Nothing
             leaves it.
           </p>
-          <p className="text-[10px] text-white/85 leading-[18px]">
+          <p className="text-[8px] text-white/85 leading-[15px]">
             When the game launches, purchases will be processed by Google Play — Google's own
             privacy policy applies to payment details. We never see your identity, contacts,
             or location.
           </p>
-          <p className="text-[9px] text-white/65 leading-[17px]">
+          <p className="text-[8px] text-white/65 leading-[15px]">
             Questions? Reach out to SekaFaji Games. (Placeholder text — update it with your
             contact email and store listing before release.)
           </p>
