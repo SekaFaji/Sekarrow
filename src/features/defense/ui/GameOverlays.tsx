@@ -64,7 +64,7 @@ export function ArmoryOverlay({ meta, buyMeta, onClose }: {
   return (
     <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4">
       <div
-        className="flex h-[min(680px,100%)] min-h-0 w-full min-w-0 max-w-[390px] flex-col gap-2 overflow-hidden border-4 border-black bg-[#1c2138] p-3 sm:p-4"
+        className="flex h-[min(680px,100%)] max-h-full min-h-0 w-full min-w-0 max-w-[390px] flex-col gap-2 overflow-hidden border-4 border-black bg-[#1c2138] p-3 sm:p-4"
         role="dialog"
         aria-modal="true"
         aria-label="The armory"
