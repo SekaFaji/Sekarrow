@@ -39,15 +39,15 @@ export function UpgradePanel({
         className="scrollbox flex h-[min(680px,100%)] min-h-0 min-w-0 w-full max-w-[420px] flex-col gap-2 overflow-x-hidden overflow-y-auto border-4 border-black bg-[#1c2138] p-2 sm:p-3 shadow-[0_6px_0_#000]"
       >
         <header className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-2">
-          <h2 className="text-[13px] text-[#f7a41d]" style={{ textShadow: "0 2px 0 #000" }}>
+          <h2 className="text-[12px] text-[#f7a41d]" style={{ textShadow: "0 2px 0 #000" }}>
             ⚒ UPGRADES
           </h2>
-          <span className="border-2 border-black bg-[#262b44] px-2 py-2 text-[10px] text-[#ffd24a]">
+          <span className="border-2 border-black bg-[#262b44] px-2 py-2 text-[9px] text-[#ffd24a]">
             ⛁ {gold} GOLD
           </span>
         </header>
 
-        <p className="text-[9px] leading-[17px] text-white/75">
+        <p className="text-[8px] leading-[15px] text-white/75">
           Build your defenses between sieges. Green tiles can be purchased immediately.
         </p>
 
@@ -61,7 +61,7 @@ export function UpgradePanel({
                 key={tab.key}
                 aria-pressed={active}
                 onClick={() => onTabChange(tab.key)}
-                className="relative flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-1 border-2 border-black px-1 py-1 text-[9px] leading-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
+                className="relative flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-1 border-2 border-black px-1 py-1 text-[8px] leading-[13px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
                 style={{ background: active ? "#ffd24a" : "#202642", color: active ? "#000" : "#e0e5f0" }}
               >
                 <span className="text-[15px] leading-4" aria-hidden="true">{tab.icon}</span>
@@ -82,7 +82,7 @@ export function UpgradePanel({
           aria-label="Available siege upgrades"
           className="scrollbox min-h-[112px] flex-1 overflow-y-auto overscroll-contain border-2 border-black bg-[#262b44] p-2"
         >
-          <div className="mb-2 flex items-center justify-between gap-2 text-[9px] leading-4">
+          <div className="mb-2 flex items-center justify-between gap-2 text-[8px] leading-[14px]">
             <span className="text-white/80">{tabs.find((tab) => tab.key === activeTab)?.name} DEFENSES</span>
             <span className={readyCount ? "text-[#7be58e]" : "text-white/55"}>{readyCount} READY</span>
           </div>
@@ -109,7 +109,7 @@ export function UpgradePanel({
                   }}
                 >
                   <span className="text-lg leading-5" aria-hidden="true">{upgrade.lockTxt ? "🔒" : upgrade.icon}</span>
-                  <span className="w-full min-w-0 text-[9px] leading-[15px] text-white [overflow-wrap:anywhere]">{upgrade.short}</span>
+                  <span className="w-full min-w-0 text-[8px] leading-[13px] text-white [overflow-wrap:anywhere]">{upgrade.short}</span>
                   <span
                     className="text-[8px] leading-3"
                     style={{ color: upgrade.done ? "#7be58e" : upgrade.lockTxt ? "#d3b76c" : upgrade.buyable ? "#7be58e" : "#aab2cb" }}
@@ -129,9 +129,9 @@ export function UpgradePanel({
         >
           {selected ? (
             <>
-              <div className="text-[10px] leading-[17px] text-white">{selected.icon} {selected.name}</div>
-              <div className="pt-1 text-[9px] leading-[16px] text-white/80">{selected.desc}</div>
-              <div className="pt-1 text-[9px] leading-4 text-[#ffd24a]">
+              <div className="text-[9px] leading-[15px] text-white">{selected.icon} {selected.name}</div>
+              <div className="pt-1 text-[8px] leading-[14px] text-white/80">{selected.desc}</div>
+              <div className="pt-1 text-[8px] leading-[14px] text-[#ffd24a]">
                 {selected.done
                   ? `✓ ${selected.doneTxt || "MAXED"}`
                   : selected.lockTxt
@@ -140,7 +140,7 @@ export function UpgradePanel({
               </div>
             </>
           ) : (
-            <div className="flex min-h-[72px] flex-col justify-center gap-2 text-[9px] leading-[17px] text-white/75">
+            <div className="flex min-h-[72px] flex-col justify-center gap-2 text-[8px] leading-[15px] text-white/75">
               <span>Select an upgrade to see its effect and cost.</span>
               <span className="text-[#ffd24a]">Green border = tap to buy immediately.</span>
             </div>
