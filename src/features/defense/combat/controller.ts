@@ -356,6 +356,7 @@ export function createCombatController({
     /* MASONRY: the keep knits its own stone back together, slowly */
     if (g.repairLvl > 0 && g.hp > 0 && g.hp < g.maxHp) {
       g.hp = Math.min(g.maxHp, g.hp + (0.4 + 0.4 * g.repairLvl) * dt);
+    }
 
     /* ARROW VOLLEY: the keep looses a volley on its own */
     if (g.volleyLvl > 0 && now >= g.volleyAt) {
@@ -458,10 +459,12 @@ export function createCombatController({
           born: now,
         });
       }
-      for (const c of g.crates) if (c.y < c.rest) c.y += 3.2 * dt;
+      for (const c of g.crates) {
+        if (c.y < c.rest) c.y = Math.min(c.rest, c.y + 36 * dt);
+      }
     }
-    g.crates = g.crates.filter((c) => now - c.born < 10);
-    }
+    g.crates = g.crates.filter((c) => now - c.born < 15);
+
     /* spawning */
     if (g.remaining > 0 && now >= g.nextSpawn) {
       g.remaining--;

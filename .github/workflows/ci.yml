@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -20,3 +22,37 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Type-check and build
         run: npm run check
+      - name: Prepare drop-in patch
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          mkdir -p patch
+          while IFS= read -r -d '' file; do
+            mkdir -p "patch/$(dirname "$file")"
+            cp "$file" "patch/$file"
+          done < <(git diff --name-only --diff-filter=ACMRT -z "$BASE_SHA" "$HEAD_SHA")
+          git diff --name-only --diff-filter=D "$BASE_SHA" "$HEAD_SHA" > patch/PATCH_REMOVALS.txt
+      - name: Package full project source
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: git archive --format=zip --output=Sekarrow-Full-Project.zip "$HEAD_SHA"
+      - name: Upload full source archive
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sekarrow-Full-Project
+          path: Sekarrow-Full-Project.zip
+          if-no-files-found: error
+      - name: Upload drop-in patch archive
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sekarrow-Dropin-Patch
+          path: patch/
+          include-hidden-files: true
+          if-no-files-found: error
