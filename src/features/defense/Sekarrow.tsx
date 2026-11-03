@@ -22,6 +22,7 @@ import { createUpgradeShop } from "./upgrades/upgradeShop";
 import { createPermanentPurchases } from "./upgrades/permanentPurchases";
 import { PauseOverlay, ConfirmQuitOverlay, ArmoryOverlay } from "./ui/GameOverlays";
 import { SettingsOverlay, PrivacyOverlay } from "./ui/SettingsPanels";
+import { UpgradePanel } from "./ui/UpgradePanel";
 import { WorldTerrain } from "./world/WorldTerrain";
 import { FortressDecor, MoatDecor, WormDecor } from "./world/FortressDecor";
 
@@ -1171,7 +1172,7 @@ export default function Sekarrow() {
             </div>
             <div className="absolute inset-0 flex items-center justify-center p-4">
               <div
-                className="flex flex-col items-center gap-3 border-4 border-black p-6 max-w-[320px] w-full max-h-[94%]"
+                className="scrollbox flex flex-col items-center gap-2 sm:gap-3 border-4 border-black p-4 sm:p-6 max-w-[340px] w-full max-h-[94%] overflow-y-auto"
                 style={{
                   background: "rgba(20,24,44,0.92)",
                   animation: "floaty 4s ease-in-out infinite",
@@ -1452,25 +1453,26 @@ export default function Sekarrow() {
         {/* ----- the courtyard: your persistent town inside the castle walls ----- */}
         {showTown && (
           <div
-            className="absolute inset-0 flex items-center justify-center bg-black/90 p-4"
+            className="absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4"
             style={{ zIndex: 47 }}
           >
             <div
-              className="flex flex-col items-center gap-2 border-4 border-black p-3 max-w-[320px] w-full max-h-[94%] overflow-y-auto"
+              className="scrollbox flex w-full max-w-[390px] max-h-[96%] flex-col items-center gap-2 overflow-y-auto border-4 border-black p-3"
               style={{ background: "#1c2138" }}
             >
               <div className="text-[#ffd24a] text-sm" style={{ textShadow: "0 2px 0 #000" }}>
                 🏚 THE COURTYARD
               </div>
-              <div className="text-[8px] text-white/50 text-center leading-3">
-                Your town lives inside the castle walls — buildings survive every defeat.
+              <div className="text-[9px] text-white/75 text-center leading-[17px]">
+                Your town lives inside the castle walls. Buildings survive every defeat.
               </div>
-              <div className="text-[10px] text-[#ffd24a]">⛁ {meta.gold} META GOLD</div>
+              <div className="text-[11px] text-[#ffd24a]">⛁ {meta.gold} META GOLD</div>
+              <div className="text-[9px] text-[#7be58e] text-center leading-4">{TOWN_BLDGS.filter((b) => meta[b.key] > 0).length}/{TOWN_BLDGS.length} STRUCTURES BUILT</div>
 
               {/* the courtyard scene: walled yard, keep at the top, building plots */}
               <div
                 className="relative w-full border-4 border-black overflow-hidden"
-                style={{ height: 150, background: "#2c4a26" }}
+                style={{ height: 180, background: "#2c4a26" }}
               >
                 <div
                   className="absolute inset-1 border-4"
@@ -1502,12 +1504,16 @@ export default function Sekarrow() {
                   return (
                     <button
                       key={b.key}
+                      type="button"
+                      aria-pressed={selTown === b.key}
+                      aria-label={`${b.name}, level ${lvl} of 4. ${maxed ? "Maxed" : `${cost} meta gold to upgrade`}`}
+                      title={b.name}
                       onClick={() => {
                         ensureAudio();
                         beep(660, 0.05);
                         setSelTown(b.key);
                       }}
-                      className="absolute flex flex-col items-center justify-center gap-0.5"
+                      className="absolute flex flex-col items-center justify-center gap-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
                       style={{
                         left: `${b.plot.x}%`,
                         top: `${b.plot.y}%`,
@@ -1538,7 +1544,7 @@ export default function Sekarrow() {
                           ) : (
                             <PixelSprite sprite={SPRITES[b.sprite!]} px={3} />
                           )}
-                          <span className="text-[5px] leading-[6px]">
+                          <span className="text-[8px] leading-[11px]">
                             <span className="text-[#ffd24a]">{"●".repeat(lvl)}</span>
                             <span className="text-white/30">{"●".repeat(4 - lvl)}</span>
                           </span>
@@ -1548,11 +1554,11 @@ export default function Sekarrow() {
                           <span className="text-[12px] leading-[14px] opacity-70">
                             {b.icon}
                           </span>
-                          <span className="text-[5px] text-white/60 leading-[7px] text-center">
+                          <span className="text-[7px] text-white/90 leading-[10px] text-center break-words">
                             {b.name}
                           </span>
                           <span
-                            className="text-[5px] leading-[7px]"
+                            className="text-[7px] leading-[10px]"
                             style={{
                               color: meta.gold >= cost ? "#ffd24a" : "#8d99ae",
                             }}
@@ -1591,7 +1597,7 @@ export default function Sekarrow() {
                   );
                 })()
               ) : (
-                <div className="text-[8px] text-white/40">tap a plot to build or upgrade</div>
+                <div className="text-[9px] text-white/75 text-center leading-4">Select a building plot to inspect its permanent benefit and cost.</div>
               )}
 
               <PixButton
@@ -1660,7 +1666,7 @@ export default function Sekarrow() {
                   <>
                     <p className="text-[8px] text-white/50 text-center leading-4">
                       Packs are free while we test — they will cost real money at launch.
-                      Bosses also drop a few rubies on their own.
+                      No payment is charged. Bosses also drop rubies.
                     </p>
                     {RUBY_PACKS.map((p) => (
                       <UpgradeCard
@@ -1668,7 +1674,7 @@ export default function Sekarrow() {
                         icon={p.name.startsWith("POUCH") ? "🎒" : p.name.startsWith("CHEST") ? "🧰" : "🏦"}
                         name={p.name}
                         desc={`+${p.rubies} rubies for perks and premium toggles.`}
-                        cost={`${p.price} — FREE`}
+                        cost="FREE TEST"
                         onClick={() => buyRubyPack(p.rubies)}
                       />
                     ))}
@@ -1703,167 +1709,26 @@ export default function Sekarrow() {
           </div>
         )}
 
-        {/* ----- upgrades: one tab per branch, all tabs the same fixed size ----- */}
+        {/* ----- in-run upgrades, with a persistent detail pane ----- */}
         {tab === "upgrades" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/90 p-4">
-            <div
-              className="flex flex-col border-4 border-black p-4 max-w-[300px] w-full max-h-[94%]"
-              style={{ background: "#1c2138" }}
-            >
-              <div className="text-[#f7a41d] text-sm text-center" style={{ textShadow: "0 2px 0 #000" }}>
-                ⚒ UPGRADES
-              </div>
-              <div className="text-[10px] text-[#ffd24a] text-center">⛁ {g.gold} GOLD</div>
-              {/* tab bar — one tab per unit family, green dot = something affordable */}
-              <div className="grid grid-cols-5 gap-1 pb-1">
-                {TABS.map((t) => {
-                  const anyBuy = UP_CATALOG.some((u) => u.cat === t.key && u.buyable);
-                  const active = upTab === t.key;
-                  return (
-                    <button
-                      key={t.key}
-                      onClick={() => {
-                        ensureAudio();
-                        beep(660, 0.04);
-                        setUpTab(t.key);
-                        setSelUp(null);
-                      }}
-                      className="relative flex flex-col items-center justify-center border-2 border-black py-1"
-                      style={{
-                        background: active ? "#ffd24a" : "#1a1f33",
-                        color: active ? "#000" : "#8d99ae",
-                      }}
-                    >
-                      <span className="text-[10px] leading-3">{t.icon}</span>
-                      <span className="text-[5px] leading-[7px]">{t.name}</span>
-                      {anyBuy && (
-                        <span
-                          className="absolute rounded-full"
-                          style={{
-                            top: 1,
-                            right: 1,
-                            width: 4,
-                            height: 4,
-                            background: "#4caf50",
-                            boxShadow: "0 0 3px #4caf50",
-                          }}
-                        />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-              <div
-                className="scrollbox overflow-y-auto flex flex-col items-center gap-2 py-2 px-1 border-4 border-black"
-                style={{ height: 240, background: "#262b44" }}
-              >
-                {/* one small tile grid for the active tab — tap = buy, and the
-                     description appears in the strip below: no second menu */}
-                <div className="grid grid-cols-4 gap-1 w-full">
-                  {UP_CATALOG.filter((u) => u.cat === upTab).map((u) => (
-                    <button
-                      key={u.id}
-                      onClick={() => {
-                        setSelUp(u.id);
-                        if (u.buyable) u.buy();
-                      }}
-                      className="relative border-2 border-black flex flex-col items-center justify-center gap-0.5 py-1"
-                      style={{
-                        background: selUp === u.id ? "#2a3154" : u.done ? "#181d2f" : "#202642",
-                        borderColor: u.buyable ? "#4caf50" : "black",
-                        opacity: u.lockTxt ? 0.55 : 1,
-                      }}
-                    >
-                      {u.buyable && (
-                        <span
-                          className="absolute rounded-full"
-                          style={{
-                            top: 2,
-                            right: 2,
-                            width: 5,
-                            height: 5,
-                            background: "#4caf50",
-                            boxShadow: "0 0 3px #4caf50",
-                          }}
-                        />
-                      )}
-                      <span className="text-[12px] leading-[14px]">
-                        {u.lockTxt ? "🔒" : u.icon}
-                      </span>
-                      <span className="text-[5px] text-white/85 leading-[7px] text-center">
-                        {u.short}
-                      </span>
-                      <span
-                        className="text-[5px] leading-[7px]"
-                        style={{
-                          color: u.done
-                            ? "#4caf50"
-                            : u.lockTxt
-                            ? "#8d99ae"
-                            : g.gold >= u.cost
-                            ? "#ffd24a"
-                            : "#8d99ae",
-                        }}
-                      >
-                        {u.done ? "MAX" : u.lockTxt ? "LOCKED" : `${u.cost}g`}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-                {/* info strip — the last-tapped upgrade, always in view */}
-                {selUp ? (
-                  (() => {
-                    const u = UP_CATALOG.find((d) => d.id === selUp);
-                    if (!u) return null;
-                    return (
-                      <div
-                        className="w-full border-2 border-black px-1.5 py-1 mt-1"
-                        style={{ background: "#181d2f" }}
-                      >
-                        <div className="text-[7px] text-white/90 leading-3">
-                          {u.icon} {u.name}
-                        </div>
-                        <div className="text-[6px] text-white/55 leading-[8px] pt-0.5">
-                          {u.desc}
-                        </div>
-                        <div
-                          className="text-[6px] leading-[8px] pt-0.5"
-                          style={{
-                            color: u.done
-                              ? "#4caf50"
-                              : u.lockTxt
-                              ? "#ffd76e"
-                              : u.buyable
-                              ? "#ffd24a"
-                              : "#8d99ae",
-                          }}
-                        >
-                          {u.done
-                            ? `✓ ${u.doneTxt || "MAXED"}`
-                            : u.lockTxt
-                            ? `🔒 ${u.lockTxt}`
-                            : `${u.cost}g`}
-                        </div>
-                      </div>
-                    );
-                  })()
-                ) : (
-                  <div className="text-[6px] text-white/35 text-center leading-3 pt-1">
-                    tap a tile to buy — its details appear here
-                  </div>
-                )}
-              </div>
-              <PixButton
-                color="#d9433b"
-                onClick={() => {
-                  setTab("none");
-                  setSelUp(null);
-                }}
-              >
-                CLOSE
-              </PixButton>
-            </div>
-          </div>
+          <UpgradePanel
+            gold={g.gold}
+            upgrades={UP_CATALOG}
+            tabs={TABS}
+            activeTab={upTab}
+            selectedId={selUp}
+            onTabChange={(key) => {
+              ensureAudio();
+              beep(660, 0.04);
+              setUpTab(key);
+              setSelUp(null);
+            }}
+            onSelect={setSelUp}
+            onClose={() => {
+              setTab("none");
+              setSelUp(null);
+            }}
+          />
         )}
 
         {phase === "gameover" && (
@@ -1887,7 +1752,7 @@ export default function Sekarrow() {
               <PixButton color="#e05fd0" disabled={meta.rubies < 50} onClick={respawn}>
                 ♥ RESPAWN — 50 ♦
               </PixButton>
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-2">
                 <PixButton color="#8d6742" small onClick={() => setShowArmory(true)}>
                   ◆ ARMORY
                 </PixButton>
