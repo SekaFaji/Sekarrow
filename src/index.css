@@ -3,11 +3,53 @@
 @tailwind utilities;
 
 html, body, #root {
+  width: 100%;
   height: 100%;
+  min-width: 0;
   margin: 0;
 }
 
 body {
   background: #12131f;
   overscroll-behavior: none;
+}
+
+/*
+ * A phone uses its full available screen. On larger screens, present the
+ * battlefield as a centered 9:16 phone frame instead of a stretched 3:4 box.
+ * The desktop height budget leaves room for the existing heading and caption.
+ */
+.sekarrow-field {
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 640px) {
+  .sekarrow-field {
+    flex: none;
+    width: min(430px, calc((100dvh - 88px) * 9 / 16));
+    height: min(764px, calc(100dvh - 88px));
+    aspect-ratio: 9 / 16;
+  }
+}
+
+/*
+ * Menus render inside the game field, not the document viewport. Keep their
+ * text and controls inside that field even on 320px phones or short displays.
+ */
+.sekarrow-modal {
+  min-width: 0;
+  min-height: 0;
+  overflow-wrap: anywhere;
+}
+
+.sekarrow-modal button {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.sekarrow-modal .scrollbox {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
