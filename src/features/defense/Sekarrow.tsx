@@ -9,10 +9,9 @@ import {
 import { KIND_STATS, waveScale, DICE_PIPS, MOD_LABELS, BOSSES } from "../../game/enemies";
 import { makeGame } from "../../game/state";
 import { readSave, writeSave } from "../../game/storage";
-import { type TownKey, RUBY_PACKS, PERKS, TOWN_BLDGS, loadMeta, saveMeta } from "../../game/meta";
+import { type TownKey, loadMeta, saveMeta } from "../../game/meta";
 import { PixelSprite } from "../../components/PixelSprite";
 import { PixButton } from "../../components/PixButton";
-import { UpgradeCard } from "../../components/UpgradeCard";
 import { createCombatController } from "./combat/controller";
 import { createDefenseInputHandlers } from "./input/defenseInput";
 import { useGameAudio } from "./audio/useGameAudio";
@@ -24,6 +23,9 @@ import { PauseOverlay, ConfirmQuitOverlay, ArmoryOverlay } from "./ui/GameOverla
 import { SettingsOverlay, PrivacyOverlay } from "./ui/SettingsPanels";
 import { menuFadeAnimation } from "./ui/menuTransition";
 import { UpgradePanel } from "./ui/UpgradePanel";
+import { HowToPlayOverlay } from "./ui/HowToPlayOverlay";
+import { CourtyardOverlay } from "./ui/CourtyardOverlay";
+import { KeepShopOverlay } from "./ui/KeepShopOverlay";
 import { WorldTerrain } from "./world/WorldTerrain";
 import { FortressDecor, MoatDecor, WormDecor } from "./world/FortressDecor";
 
@@ -1298,40 +1300,7 @@ export default function Sekarrow() {
         )}
 
         {/* ----- how to play: shown the first time the player presses PLAY ----- */}
-        {showHowTo && (
-          <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4">
-            <div
-              className="scrollbox flex min-w-0 flex-col items-center gap-3 border-4 border-black p-3 sm:p-4 max-w-[390px] w-full max-h-full overflow-x-hidden overflow-y-auto"
-              style={{ background: "#1c2138" }}
-            >
-              <div
-                className="text-[#ffd24a] text-[12px] text-center"
-                style={{ textShadow: "0 2px 0 #000" }}
-              >
-                ⚔ HOW TO DEFEND THE KEEP
-              </div>
-              {[
-                ["🏹", "HOLD & DRAG anywhere — arrows fly toward your finger and stop only when they hit something"],
-                ["🔴", "RED ARROWS are distance crits: ×2 damage and ×2 range"],
-                ["☁️", "SKY enemies dive from above — turrets love them. GRUNTS march the grass — archers hunt them"],
-                ["🕳️", "TUNNELERS strike from below in mid/late game — only EARTHWORM turrets can shoot them underground"],
-                ["⭐", "BOSSES come every 5 waves and drop rubies — spend them in the SHOP on permanent perks"],
-                ["✨", "ELITE foes glow gold: 2.2× HP but double bounty. Chain kills within 2.5s for COMBO gold!"],
-                ["📦", "SUPPLY CRATES drift down mid-wave — tap one out of the sky for bonus gold!"],
-                ["⚔", "From wave 3, every wave rolls a MODIFIER (SIEGE, SWIFT, BOUNTY…) — read the banner and adapt!"],
-                ["⚒️", "Between waves, spend gold in UPGRADES: arrows, shields, turrets, archers & worms"],
-              ].map(([icon, txt]) => (
-                <div key={txt} className="flex w-full min-w-0 items-start gap-2">
-                  <span className="w-5 shrink-0 text-center text-sm">{icon}</span>
-                  <span className="min-w-0 flex-1 text-[8px] text-white/85 leading-[15px]">{txt}</span>
-                </div>
-              ))}
-              <PixButton color="#4caf50" onClick={dismissHowTo}>
-                GOT IT — DEFEND THE KEEP!
-              </PixButton>
-            </div>
-          </div>
-        )}
+        {showHowTo && <HowToPlayOverlay onContinue={dismissHowTo} />}
 
         {phase === "intermission" && (
           <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/85 p-2 sm:p-4">
@@ -1452,167 +1421,20 @@ export default function Sekarrow() {
         {/* ----- shop: ruby packs + premium perks, in scrollable tabs ----- */}
         {/* ----- the courtyard: your persistent town inside the castle walls ----- */}
         {showTown && (
-          <div
-            className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4"
-            style={{ zIndex: 47 }}
-          >
-            <div
-              className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-2 overflow-x-hidden overflow-y-auto border-4 border-black p-3"
-              style={{ background: "#1c2138" }}
-            >
-              <div className="text-[#ffd24a] text-[12px]" style={{ textShadow: "0 2px 0 #000" }}>
-                🏚 THE COURTYARD
-              </div>
-              <div className="text-[8px] text-white/75 text-center leading-[15px]">
-                Your town lives inside the castle walls. Buildings survive every defeat.
-              </div>
-              <div className="text-[9px] text-[#ffd24a]">⛁ {meta.gold} META GOLD</div>
-              <div className="text-[8px] text-[#7be58e] text-center leading-[14px]">{TOWN_BLDGS.filter((b) => meta[b.key] > 0).length}/{TOWN_BLDGS.length} STRUCTURES BUILT</div>
-
-              {/* the courtyard scene: walled yard, keep at the top, building plots */}
-              <div
-                className="relative w-full min-w-0 shrink-0 border-4 border-black overflow-hidden"
-                style={{ height: 180, background: "#2c4a26" }}
-              >
-                <div
-                  className="absolute inset-1 border-4"
-                  style={{ borderColor: "#565d63", boxShadow: "inset 0 0 0 2px #000" }}
-                />
-                {/* corner watchtowers */}
-                {[
-                  { left: 2, top: 2 },
-                  { right: 2, top: 2 },
-                  { left: 2, bottom: 2 },
-                  { right: 2, bottom: 2 },
-                ].map((c, i) => (
-                  <div key={"ctow" + i} className="absolute" style={c}>
-                    <PixelSprite sprite={SPRITES.tower} px={2} />
-                  </div>
-                ))}
-                {/* the keep */}
-                <div
-                  className="absolute"
-                  style={{ left: "50%", top: 6, transform: "translateX(-50%)" }}
-                >
-                  <PixelSprite sprite={SPRITES.castle} px={4} />
-                </div>
-                {/* building plots */}
-                {TOWN_BLDGS.map((b) => {
-                  const lvl = meta[b.key];
-                  const cost = b.base * Math.pow(2, lvl);
-                  const maxed = lvl >= 4;
-                  return (
-                    <button
-                      key={b.key}
-                      type="button"
-                      aria-pressed={selTown === b.key}
-                      aria-label={`${b.name}, level ${lvl} of 4. ${maxed ? "Maxed" : `${cost} meta gold to upgrade`}`}
-                      title={b.name}
-                      onClick={() => {
-                        ensureAudio();
-                        beep(660, 0.05);
-                        setSelTown(b.key);
-                      }}
-                      className="absolute flex flex-col items-center justify-center gap-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
-                      style={{
-                        left: `${b.plot.x}%`,
-                        top: `${b.plot.y}%`,
-                        width: 52,
-                        height: 44,
-                        border:
-                          selTown === b.key
-                            ? "2px solid #ffd24a"
-                            : lvl > 0
-                            ? "2px solid transparent"
-                            : "2px dashed rgba(255,255,255,0.4)",
-                        background: lvl > 0 ? "transparent" : "rgba(0,0,0,0.25)",
-                      }}
-                    >
-                      {lvl > 0 ? (
-                        <>
-                          {b.key === "townMoat" ? (
-                            <div
-                              style={{
-                                width: 40,
-                                height: 12,
-                                borderRadius: "50%",
-                                background: "#3b5bdc",
-                                border: "2px solid #14171c",
-                                boxShadow: "0 0 3px #1c2f8a",
-                              }}
-                            />
-                          ) : (
-                            <PixelSprite sprite={SPRITES[b.sprite!]} px={3} />
-                          )}
-                          <span className="text-[8px] leading-[11px]">
-                            <span className="text-[#ffd24a]">{"●".repeat(lvl)}</span>
-                            <span className="text-white/30">{"●".repeat(4 - lvl)}</span>
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="text-[12px] leading-[14px] opacity-70">
-                            {b.icon}
-                          </span>
-                          <span className="text-[7px] text-white/90 leading-[10px] text-center break-words">
-                            {b.name}
-                          </span>
-                          <span
-                            className="text-[7px] leading-[10px]"
-                            style={{
-                              color: meta.gold >= cost ? "#ffd24a" : "#8d99ae",
-                            }}
-                          >
-                            {maxed ? "MAX" : `${cost}◆`}
-                          </span>
-                        </>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* selected building card */}
-              {selTown ? (
-                (() => {
-                  const def = TOWN_BLDGS.find((b) => b.key === selTown)!;
-                  const lvl = meta[def.key];
-                  const maxed = lvl >= 4;
-                  const cost = def.base * Math.pow(2, lvl);
-                  return (
-                    <UpgradeCard
-                      icon={def.icon}
-                      name={`${def.name} — ${"●".repeat(lvl)}${"○".repeat(4 - lvl)}`}
-                      desc={
-                        lvl > 0
-                          ? `Now: ${def.fx(lvl)}${maxed ? "." : `. Next: ${def.fx(lvl + 1)}.`} ${def.desc}`
-                          : `${def.desc} ${def.fx(1)}.`
-                      }
-                      cost={maxed ? "" : `${cost}◆`}
-                      disabled={maxed || meta.gold < cost}
-                      done={maxed ? "MAXED" : undefined}
-                      action={lvl > 0 ? "UPGRADE" : "BUILD"}
-                      onClick={() => buyTown(def.key)}
-                    />
-                  );
-                })()
-              ) : (
-                <div className="text-[8px] text-white/75 text-center leading-[14px]">Select a building plot to inspect its permanent benefit and cost.</div>
-              )}
-
-              <div className="sticky bottom-0 z-10 flex w-full shrink-0 justify-center border-t-2 border-black bg-[#1c2138] px-2 pt-2 pb-1">
-                <PixButton
-                  color="#d9433b"
-                  onClick={() => {
-                    setShowTown(false);
-                    setSelTown(null);
-                  }}
-                >
-                  CLOSE
-                </PixButton>
-              </div>
-            </div>
-          </div>
+          <CourtyardOverlay
+            meta={meta}
+            selectedTown={selTown}
+            onSelectTown={(key) => {
+              ensureAudio();
+              beep(660, 0.05);
+              setSelTown(key);
+            }}
+            onBuyTown={buyTown}
+            onClose={() => {
+              setShowTown(false);
+              setSelTown(null);
+            }}
+          />
         )}
 
         {/* ----- settings: general / sound / about ----- */}
@@ -1638,79 +1460,17 @@ export default function Sekarrow() {
         {showPrivacy && <PrivacyOverlay onBack={() => setShowPrivacy(false)} />}
 
         {(tab === "shop" || menuShop) && (
-          <div className="sekarrow-modal absolute inset-0 flex items-center justify-center bg-black/90 p-2 sm:p-4">
-            <div
-              className="flex h-[min(620px,100%)] min-h-0 w-full min-w-0 max-w-[390px] flex-col gap-2 overflow-hidden border-4 border-black p-3 sm:p-4"
-              style={{ background: "#1c2138" }}
-            >
-              <div className="shrink-0 text-[#ffd24a] text-[12px] text-center" style={{ textShadow: "0 2px 0 #000" }}>
-                ⛒ KEEP SHOP
-              </div>
-              <div className="shrink-0 text-[9px] text-[#ff8fa3] text-center">♦ {meta.rubies} RUBIES</div>
-              <div className="flex shrink-0 flex-wrap gap-2 justify-center py-1">
-                <PixButton
-                  small
-                  color={shopTab === "rubies" ? "#ffd24a" : "#8d99ae"}
-                  onClick={() => setShopTab("rubies")}
-                >
-                  ♦ PACKS
-                </PixButton>
-                <PixButton
-                  small
-                  color={shopTab === "perks" ? "#ffd24a" : "#8d99ae"}
-                  onClick={() => setShopTab("perks")}
-                >
-                  ★ PERKS
-                </PixButton>
-              </div>
-              <div className="scrollbox flex min-h-0 min-w-0 flex-1 flex-col items-center gap-2 overflow-x-hidden overflow-y-auto overscroll-contain border-4 border-black px-2 py-2" style={{ background: "#262b44" }}>
-                {shopTab === "rubies" ? (
-                  <>
-                    <p className="min-w-0 text-center text-[8px] leading-[15px] text-white/80">
-                      Packs are free while we test — they will cost real money at launch.
-                      No payment is charged. Bosses also drop rubies.
-                    </p>
-                    {RUBY_PACKS.map((p) => (
-                      <UpgradeCard
-                        key={p.name}
-                        icon={p.name.startsWith("POUCH") ? "🎒" : p.name.startsWith("CHEST") ? "🧰" : "🏦"}
-                        name={p.name}
-                        desc={`+${p.rubies} rubies for perks and premium toggles.`}
-                        cost="FREE TEST"
-                        onClick={() => buyRubyPack(p.rubies)}
-                      />
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    <p className="min-w-0 text-center text-[8px] leading-[15px] text-white/80">
-                      Permanent unlocks paid in rubies — yours forever.
-                    </p>
-                    {PERKS.map((p) => {
-                      const owned = meta[p.key] > 0;
-                      return (
-                        <UpgradeCard
-                          key={p.key}
-                          icon="★"
-                          name={p.name}
-                          desc={p.desc}
-                          cost={`${p.cost} ♦`}
-                          disabled={meta.rubies < p.cost}
-                          done={owned ? "OWNED" : undefined}
-                          onClick={() => buyPerk(p.key, p.cost)}
-                        />
-                      );
-                    })}
-                  </>
-                )}
-              </div>
-              <div className="flex shrink-0 justify-center pt-1">
-                <PixButton color="#d9433b" onClick={() => { setTab("none"); setMenuShop(false); }}>
-                  CLOSE
-                </PixButton>
-              </div>
-            </div>
-          </div>
+          <KeepShopOverlay
+            meta={meta}
+            activeTab={shopTab}
+            onTabChange={setShopTab}
+            onBuyRubyPack={buyRubyPack}
+            onBuyPerk={buyPerk}
+            onClose={() => {
+              setTab("none");
+              setMenuShop(false);
+            }}
+          />
         )}
 
         {/* ----- in-run upgrades, with a persistent detail pane ----- */}

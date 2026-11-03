@@ -52,7 +52,8 @@ test("settings and privacy paragraphs use matching compact text sizes", () => {
 test("game information is compact without reducing button touch targets", () => {
   const source = readFileSync("src/features/defense/Sekarrow.tsx", "utf8");
   const upgrade = readFileSync("src/features/defense/ui/UpgradePanel.tsx", "utf8");
-  assert.match(source, /text-\[8px\] text-white\/85 leading-\[15px\]/);
+  const howTo = readFileSync("src/features/defense/ui/HowToPlayOverlay.tsx", "utf8");
+  assert.match(howTo, /text-\[8px\] text-white\/85 leading-\[15px\]/);
   assert.match(source, /text-\[8px\] text-white\/70 text-center leading-\[15px\]/);
   assert.match(source, /text-\[9px\] text-white\/85 leading-\[17px\]/);
   assert.match(upgrade, /text-\[8px\] leading-\[14px\] text-white\/80/);
