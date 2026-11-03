@@ -391,12 +391,11 @@ export default function Sekarrow() {
         style={{
           background: "linear-gradient(#1b1f4b 0%, #2a2358 45%, #5b2f63 75%, #7a3b5e 100%)",
           boxShadow: "0 6px 0 #000",
-          touchAction: "none",
         }}
       >
         <div
           className="absolute inset-0"
-          style={{ transform: `translate(${shakeX}px, ${shakeY}px)` }}
+          style={{ transform: `translate(${shakeX}px, ${shakeY}px)`, touchAction: "none" }}
         >
           {/* stars & moon */}
           {stars.map((s, i) => (
