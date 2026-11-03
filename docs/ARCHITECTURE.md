@@ -17,7 +17,9 @@ src/
 │       ├── audio/useGameAudio.ts  # Web Audio sound effects
 │       ├── upgrades/upgradeShop.ts # In-run upgrade catalog and purchase rules
 │       ├── upgrades/permanentPurchases.ts # Persistent upgrade transactions
-│       └── ui/GameOverlays.tsx  # Reusable pause, quit and armory panels
+│       ├── ui/GameOverlays.tsx  # Reusable pause, quit and armory panels
+│       ├── ui/SettingsPanels.tsx # Settings and privacy presentation
+│       └── world/               # Memoized static terrain and fortress decor
 ├── game/
 │   ├── types.ts                   # Shared game and save-state types
 │   ├── sprites.ts                 # Pixel art source data
@@ -43,7 +45,15 @@ src/
 
 ## Intentional limitations of the first cleanup
 
-The screen component is **still large** and includes menu orchestration, settings, the courtyard scene, and world rendering; upgrade catalogs, purchase operations and three overlays are now separate. The simulation and frame scheduler are now extracted, but the combat controller is still imperative and uses injected callbacks. Further decomposition of UI, isolating state transitions, expanding automated tests, expanding lint rules and test depth remain follow-up work. No visual or mechanical redesign is part of this patch.
+The screen component is **still large** and includes menu orchestration, the courtyard scene, and animated world rendering; upgrade catalogs, purchase operations, settings/privacy panels, static terrain and fortress decor are now separate. The simulation and frame scheduler are now extracted, but the combat controller is still imperative and uses injected callbacks. Further decomposition of UI, isolating state transitions, expanding automated tests, expanding lint rules and test depth remain follow-up work. No visual or mechanical redesign is part of this patch.
+
+## Rendering boundary (Patch 2)
+
+- `WorldTerrain` and the static fortress decoration components are `React.memo` components with primitive zoom, scale, and construction-state props. They are not passed the mutable `Game` object, so frame-driven UI refreshes do not rerender them after zoom settles unless a relevant building changes.
+- Animated enemies, arrows, the castle's hit feedback, guard motion and UI overlays retain their original update behavior and DOM order. This is a limited optimization rather than a new renderer.
+- Settings and privacy markup live in `SettingsPanels.tsx`. Storage, audio, and state transitions still belong to the main feature component.
+- Tests cover camera projection, memoized boundaries, and the extracted settings panels. CI still runs the existing combat and persistence checks.
+- The main screen continues to request a React update each animation frame. A more substantial renderer refactor should be benchmarked before altering animation cadence or combat behavior.
 
 ## Changes requiring care
 

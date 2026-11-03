@@ -63,7 +63,9 @@ src/
 │   ├── useGameLoop.ts          # Animation frame scheduler
 │   ├── upgrades/upgradeShop.ts  # In-run catalog and purchases
 │   ├── upgrades/permanentPurchases.ts  # Persistent shop transactions
-│   └── ui/GameOverlays.tsx    # Pause, quit and armory overlays
+│   ├── ui/GameOverlays.tsx    # Pause, quit and armory overlays
+│   ├── ui/SettingsPanels.tsx  # Settings and privacy panels
+│   └── world/                # Memoized stationary scenery and structures
 ├── game/
 │   ├── types.ts                # Game types
 │   ├── sprites.ts              # Pixel art data
@@ -82,7 +84,7 @@ The app uses **React, TypeScript, Vite and Tailwind CSS**, with a custom simulat
 
 ## Project status
 
-**Playable prototype / architecture refactor.** This is an independent learning and portfolio project by SekaFaji Games. The architecture has been modularized in stages; the main gameplay feature remains large and UI-heavy. Focused regression tests cover core invariants, but not full gameplay or browser behavior.
+**Playable prototype / architecture refactor.** This is an independent learning and portfolio project by SekaFaji Games. The architecture has been modularized in stages; stationary scenery and settings panels are now isolated, although the main gameplay feature remains large and UI-heavy. Focused regression tests cover core invariants, but not full gameplay or browser behavior.
 
 The official project URL is [github.com/SekaFaji/Sekarrow](https://github.com/SekaFaji/Sekarrow), with a GitHub Pages base path of `/Sekarrow/`. Existing browser saves are migrated automatically from the former prototype's storage keys.
 

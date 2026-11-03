@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Game, Meta } from "../../game/types";
 import { SPRITES } from "../../game/sprites";
 import {
-  CASTLE, TURRET_POS, TOWER_SPOTS, MAX_TURRETS,
-  ARCHER_POS, WORM_POS, castleScaleOf, camZoomNow,
-  ROCKS, TUNNELS, PINES, scaledPos, waveLabel,
+  CASTLE, TURRET_POS, MAX_TURRETS,
+  ARCHER_POS, castleScaleOf, camZoomNow,
+  scaledPos, waveLabel,
 } from "../../game/config";
 import { KIND_STATS, waveScale, DICE_PIPS, MOD_LABELS, BOSSES } from "../../game/enemies";
 import { makeGame } from "../../game/state";
@@ -21,6 +21,9 @@ import { useGameLoop } from "./useGameLoop";
 import { createUpgradeShop } from "./upgrades/upgradeShop";
 import { createPermanentPurchases } from "./upgrades/permanentPurchases";
 import { PauseOverlay, ConfirmQuitOverlay, ArmoryOverlay } from "./ui/GameOverlays";
+import { SettingsOverlay, PrivacyOverlay } from "./ui/SettingsPanels";
+import { WorldTerrain } from "./world/WorldTerrain";
+import { FortressDecor, MoatDecor, WormDecor } from "./world/FortressDecor";
 
 export default function Sekarrow() {
   const [phase, setPhase] = useState<"menu" | "playing" | "intermission" | "gameover">("menu");
@@ -412,74 +415,7 @@ export default function Sekarrow() {
             <PixelSprite sprite={SPRITES.moon} px={6} style={{ opacity: 0.9 }} />
           </div>
 
-          {/* ground & underground — real world space the camera reveals as you progress */}
-          <div
-            className="absolute"
-            style={{
-              left: `${S(-280)}%`,
-              top: `${S(82)}%`,
-              width: `${660 * z}%`,
-              height: `${8 * z}%`,
-              background: "#1d4d2b",
-              borderTop: `${6 * z}px solid #0e2416`,
-            }}
-          />
-          <div
-            className="absolute"
-            style={{
-              left: `${S(-280)}%`,
-              top: `${S(90)}%`,
-              width: `${660 * z}%`,
-              height: `${320 * z}%`,
-              background: "linear-gradient(#4a3020 0%, #332014 35%, #1a1009 100%)",
-            }}
-          />
-          {/* pines scattered across the widening land */}
-          {PINES.map((t, i) => (
-            <div
-              key={"pine" + i}
-              className="absolute"
-              style={{
-                left: `${S(t.x)}%`,
-                top: `${S(87)}%`,
-                transform: "translate(-50%,-100%)",
-              }}
-            >
-              <PixelSprite sprite={SPRITES.pine} px={t.px * z} />
-            </div>
-          ))}
-          {/* rocks buried in the dirt */}
-          {ROCKS.map((r, i) => (
-            <div
-              key={"rock" + i}
-              className="absolute"
-              style={{
-                left: `${S(r.x)}%`,
-                top: `${S(r.y)}%`,
-                width: r.s * z,
-                height: r.s * z,
-                background: "#241206",
-                transform: "translate(-50%,-50%)",
-              }}
-            />
-          ))}
-          {/* sealed tunnels — foreshadowing the underground army */}
-          {TUNNELS.map((t, i) => (
-            <div
-              key={"tunnel" + i}
-              className="absolute"
-              style={{
-                left: `${S(t.x)}%`,
-                top: `${S(t.y)}%`,
-                width: t.s * z,
-                height: t.s * 0.72 * z,
-                background: "#0a0705",
-                border: `${3 * z}px solid #3a2417`,
-                borderRadius: "50%",
-                transform: "translate(-50%,-50%)",
-              }}
-            />
-          ))}
+          <WorldTerrain zoom={z} />
 
           {/* castle */}
           <div
@@ -516,50 +452,7 @@ export default function Sekarrow() {
             )}
           </div>
 
-          {/* towers flank the keep on the left and right — each adds unit slots */}
-          {TOWER_SPOTS.slice(0, g.towers).map((p, i) => {
-            const pos = scaledPos(p, castleScale);
-            return (
-              <div
-                key={`tower-${i}`}
-                className="absolute pointer-events-none"
-                style={{
-                  left: `${S(pos.x)}%`,
-                  top: `${S(pos.y)}%`,
-                  transform: "translate(-50%,-100%)",
-                }}
-              >
-                <PixelSprite sprite={SPRITES.tower} px={4 * castleScale * z} />
-              </div>
-            );
-          })}
-
-          {/* castle-town buildings rise around the keep as you build them */}
-          {(
-            [
-              { k: "mine", s: { x: 12, y: 95 } },
-              { k: "beacon", s: { x: 88, y: 95 } },
-              { k: "cata", s: { x: 50, y: 97 } },
-              { k: "barracks", s: { x: 30, y: 96 } },
-            ] as const
-          )
-            .filter((b) => g[b.k])
-            .map((b) => {
-              const pos = scaledPos(b.s, castleScale);
-              return (
-                <div
-                  key={b.k}
-                  className="absolute pointer-events-none"
-                  style={{
-                    left: `${S(pos.x)}%`,
-                    top: `${S(pos.y)}%`,
-                    transform: "translate(-50%,-100%)",
-                  }}
-                >
-                  <PixelSprite sprite={SPRITES[b.k]} px={3.5 * castleScale * z} />
-                </div>
-              );
-            })}
+          <FortressDecor zoom={z} scale={castleScale} towers={g.towers} mine={g.mine} beacon={g.beacon} cata={g.cata} barracks={g.barracks} />
           {/* the barracks guard stands watch by the gate — hops when he sorties */}
           {g.barracks && (
             <div
@@ -577,23 +470,7 @@ export default function Sekarrow() {
               <PixelSprite sprite={SPRITES.guard} px={4 * castleScale * z} />
             </div>
           )}
-          {g.moat && (
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                left: `${S(CASTLE.x)}%`,
-                top: `${S(CASTLE.y)}%`,
-                transform: "translate(-50%,-50%)",
-                width: 200 * castleScale * z,
-                height: 90 * castleScale * z,
-                borderRadius: "50%",
-                border: `${Math.max(1.5, 2.5 * z)}px solid #3d7ebf`,
-                background: "rgba(64,148,255,0.18)",
-                boxShadow: `0 0 ${8 * z}px rgba(64,148,255,0.35)`,
-              }}
-            />
-          )}
-
+          <MoatDecor zoom={z} scale={castleScale} moat={g.moat} />
           {/* turrets on the walls — rotate to follow your aim */}
           {Array.from({ length: g.turrets }, (_, i) => {
             const tp = scaledPos(TURRET_POS[i], castleScale);
@@ -644,24 +521,7 @@ export default function Sekarrow() {
             );
           })}
 
-          {/* earthworm turrets in the dirt — they hunt the tunnelers */}
-          {Array.from({ length: g.worms }, (_, i) => {
-            const wp = scaledPos(WORM_POS[i], castleScale);
-            return (
-              <div
-                key={i}
-                className="absolute"
-                style={{
-                  left: `${S(wp.x)}%`,
-                  top: `${S(wp.y)}%`,
-                  transform: "translate(-50%,-50%)",
-                }}
-              >
-                <PixelSprite sprite={SPRITES.worm} px={4 * castleScale * z} />
-              </div>
-            );
-          })}
-
+          <WormDecor zoom={z} scale={castleScale} worms={g.worms} />
           {/* enemies */}
           {g.enemies.map((e) => {
             const st = KIND_STATS[e.kind];
@@ -1749,178 +1609,25 @@ export default function Sekarrow() {
 
         {/* ----- settings: general / sound / about ----- */}
         {showSettings && (
-          <div
-            className="absolute inset-0 flex items-center justify-center bg-black/90 p-4"
-            style={{ zIndex: 45 }}
-          >
-            <div
-              className="flex flex-col border-4 border-black p-4 max-w-[300px] w-full max-h-[94%]"
-              style={{ background: "#1c2138" }}
-            >
-              <div
-                className="text-[#8d99ae] text-sm text-center"
-                style={{ textShadow: "0 2px 0 #000" }}
-              >
-                ⚙ SETTINGS
-              </div>
-              <div className="flex gap-2 justify-center py-2">
-                <PixButton
-                  small
-                  color={settingsTab === "general" ? "#ffd24a" : "#8d99ae"}
-                  onClick={() => setSettingsTab("general")}
-                >
-                  ★ GENERAL
-                </PixButton>
-                <PixButton
-                  small
-                  color={settingsTab === "sound" ? "#ffd24a" : "#8d99ae"}
-                  onClick={() => setSettingsTab("sound")}
-                >
-                  🔊 SOUND
-                </PixButton>
-                <PixButton
-                  small
-                  color={settingsTab === "about" ? "#ffd24a" : "#8d99ae"}
-                  onClick={() => setSettingsTab("about")}
-                >
-                  ♦ ABOUT
-                </PixButton>
-              </div>
-              <div
-                className="scrollbox overflow-y-auto flex flex-col items-center gap-2 py-2 px-1 border-4 border-black"
-                style={{ height: 220, background: "#262b44" }}
-              >
-                {settingsTab === "general" && (
-                  <>
-                    <p className="text-[8px] text-white/50 text-center leading-4">
-                      Restore rubies and perks linked to this device, or read our privacy policy.
-                    </p>
-                    <UpgradeCard
-                      icon="↻"
-                      name="RESTORE PURCHASES"
-                      desc="Re-load every ruby pack and perk linked to this device."
-                      cost="FREE"
-                      action="RESTORE"
-                      onClick={restorePurchases}
-                    />
-                    {restoreMsg && (
-                      <div className="text-[9px] text-[#4caf50] text-center">{restoreMsg}</div>
-                    )}
-                    <UpgradeCard
-                      icon="📜"
-                      name="PRIVACY POLICY"
-                      desc="What the keep knows about you — and it isn't much."
-                      cost="DOC"
-                      action="READ"
-                      onClick={() => setShowPrivacy(true)}
-                    />
-                  </>
-                )}
-                {settingsTab === "sound" && (
-                  <>
-                    <p className="text-[8px] text-white/50 text-center leading-4">
-                      Every beep, twang and explosion in the keep.
-                    </p>
-                    <UpgradeCard
-                      icon="🔊"
-                      name="SOUND"
-                      desc="Toggle all combat and menu sounds. Saved between sessions."
-                      cost={soundOn ? "ON" : "OFF"}
-                      action={soundOn ? "MUTE" : "UNMUTE"}
-                      onClick={toggleSound}
-                    />
-                    <UpgradeCard
-                      icon="▶"
-                      name="TEST SOUND"
-                      desc="Play a short fanfare to check your volume."
-                      cost="FREE"
-                      action="PLAY"
-                      onClick={() => {
-                        ensureAudio();
-                        beep(660, 0.1);
-                        setTimeout(() => beep(880, 0.12), 110);
-                      }}
-                    />
-                  </>
-                )}
-                {settingsTab === "about" && (
-                  <>
-                    <div className="text-[10px] text-white text-center leading-5">
-                      SEKARROW <span className="text-white/50">v1.0</span>
-                    </div>
-                    <div className="text-[9px] text-[#f7a41d] text-center leading-5">
-                      a SekaFaji Games production
-                    </div>
-                    <div className="text-[8px] text-white/60 text-center leading-4">
-                      Design • Code • Pixels — SekaFaji Games
-                    </div>
-                    <div className="text-[8px] text-white/40 text-center leading-4">
-                      Huge thanks to every keeper who tested the walls.
-                    </div>
-                    <div className="text-[8px] text-white/40 text-center leading-4">
-                      ⛒ Ruby packs • ♦ Perks • 🪱 Earthworms — all in a day's siege.
-                    </div>
-                  </>
-                )}
-              </div>
-              <PixButton
-                color="#d9433b"
-                small
-                onClick={() => {
-                  setShowSettings(false);
-                  setRestoreMsg("");
-                }}
-              >
-                CLOSE
-              </PixButton>
-            </div>
-          </div>
+          <SettingsOverlay
+            settingsTab={settingsTab}
+            setSettingsTab={setSettingsTab}
+            restorePurchases={restorePurchases}
+            restoreMsg={restoreMsg}
+            soundOn={soundOn}
+            toggleSound={toggleSound}
+            ensureAudio={ensureAudio}
+            beep={beep}
+            onPrivacy={() => setShowPrivacy(true)}
+            onClose={() => {
+              setShowSettings(false);
+              setRestoreMsg("");
+            }}
+          />
         )}
 
         {/* ----- privacy policy ----- */}
-        {showPrivacy && (
-          <div
-            className="absolute inset-0 flex items-center justify-center bg-black/90 p-4"
-            style={{ zIndex: 55 }}
-          >
-            <div
-              className="flex flex-col border-4 border-black p-4 max-w-[300px] w-full max-h-[94%]"
-              style={{ background: "#1c2138" }}
-            >
-              <div
-                className="text-[#ffd24a] text-sm text-center"
-                style={{ textShadow: "0 2px 0 #000" }}
-              >
-                📜 PRIVACY POLICY
-              </div>
-              <div
-                className="scrollbox overflow-y-auto flex flex-col gap-2 py-2 px-1 border-4 border-black"
-                style={{ height: 240, background: "#262b44" }}
-              >
-                <p className="text-[8px] text-white/70 leading-4">
-                  Sekarrow is built by SekaFaji Games. We do not collect, store, or share any
-                  personal data.
-                </p>
-                <p className="text-[8px] text-white/70 leading-4">
-                  Your progress, gold, and rubies live only on your device (local storage). Nothing
-                  leaves it.
-                </p>
-                <p className="text-[8px] text-white/70 leading-4">
-                  When the game launches, purchases will be processed by Google Play — Google's own
-                  privacy policy applies to payment details. We never see your identity, contacts,
-                  or location.
-                </p>
-                <p className="text-[8px] text-white/40 leading-4">
-                  Questions? Reach out to SekaFaji Games. (Placeholder text — update it with your
-                  contact email and store listing before release.)
-                </p>
-              </div>
-              <PixButton color="#d9433b" small onClick={() => setShowPrivacy(false)}>
-                BACK
-              </PixButton>
-            </div>
-          </div>
-        )}
+        {showPrivacy && <PrivacyOverlay onBack={() => setShowPrivacy(false)} />}
 
         {(tab === "shop" || menuShop) && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/90 p-4">
