@@ -1601,15 +1601,17 @@ export default function Sekarrow() {
                 <div className="text-[9px] text-white/75 text-center leading-4">Select a building plot to inspect its permanent benefit and cost.</div>
               )}
 
-              <PixButton
-                color="#d9433b"
-                onClick={() => {
-                  setShowTown(false);
-                  setSelTown(null);
-                }}
-              >
-                CLOSE
-              </PixButton>
+              <div className="sticky bottom-0 z-10 flex w-full shrink-0 justify-center border-t-2 border-black bg-[#1c2138] px-2 pt-2 pb-1">
+                <PixButton
+                  color="#d9433b"
+                  onClick={() => {
+                    setShowTown(false);
+                    setSelTown(null);
+                  }}
+                >
+                  CLOSE
+                </PixButton>
+              </div>
             </div>
           </div>
         )}
@@ -1665,7 +1667,7 @@ export default function Sekarrow() {
               <div className="scrollbox flex min-h-0 min-w-0 flex-1 flex-col items-center gap-2 overflow-x-hidden overflow-y-auto overscroll-contain border-4 border-black px-2 py-2" style={{ background: "#262b44" }}>
                 {shopTab === "rubies" ? (
                   <>
-                    <p className="text-[8px] text-white/50 text-center leading-4">
+                    <p className="min-w-0 text-center text-[9px] leading-[17px] text-white/80">
                       Packs are free while we test — they will cost real money at launch.
                       No payment is charged. Bosses also drop rubies.
                     </p>
@@ -1682,7 +1684,7 @@ export default function Sekarrow() {
                   </>
                 ) : (
                   <>
-                    <p className="text-[8px] text-white/50 text-center leading-4">
+                    <p className="min-w-0 text-center text-[9px] leading-[17px] text-white/80">
                       Permanent unlocks paid in rubies — yours forever.
                     </p>
                     {PERKS.map((p) => {
@@ -1703,9 +1705,11 @@ export default function Sekarrow() {
                   </>
                 )}
               </div>
-              <div className="flex shrink-0 justify-center pt-1"><PixButton color="#d9433b" onClick={() => { setTab("none"); setMenuShop(false); }}>
-                CLOSE
-              </PixButton></div>
+              <div className="flex shrink-0 justify-center pt-1">
+                <PixButton color="#d9433b" onClick={() => { setTab("none"); setMenuShop(false); }}>
+                  CLOSE
+                </PixButton>
+              </div>
             </div>
           </div>
         )}
