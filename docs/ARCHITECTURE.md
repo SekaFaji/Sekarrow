@@ -73,6 +73,13 @@ The screen component is **still large** and includes menu orchestration, the cou
 - The shop and armory keep their close buttons outside their scroll lists. The courtyard keeps its map height and uses a sticky close action. Between-wave menu buttons wrap instead of exceeding panel width.
 - This patch does not change the simulation, upgrades, save keys, or game progression. Verify actual viewport layouts on a narrow phone and a short landscape screen in addition to CI.
 
+## Compact informational typography
+
+- Informational copy uses an intentionally compact pixel-font scale (mostly 8px body text and 9px labels). Submenu headings sit around 12px, with the main title and gameplay cues intentionally remaining prominent.
+- This is a presentation-only adjustment to existing panels, including the HUD, armory, courtyard, shop, tutorial, settings, and run summaries. No gameplay pricing or mechanics change.
+- Interactive pixel buttons retain their existing minimum tap target sizes; text wrapping and scrollable mobile panels from the previous patch remain enabled.
+- Because pixel fonts are unusually wide, review on a real 320px-wide phone before further increasing the font size.
+
 ## Changes requiring care
 
 - Any future save-key or schema changes must preserve existing progress and be tested as migrations.
