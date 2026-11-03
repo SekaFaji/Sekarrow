@@ -36,7 +36,7 @@ export function UpgradePanel({
         role="dialog"
         aria-modal="true"
         aria-label="Siege upgrades"
-        className="flex h-[min(630px,96%)] min-h-0 w-full max-w-[420px] flex-col gap-2 border-4 border-black bg-[#1c2138] p-2 sm:p-3 shadow-[0_6px_0_#000]"
+        className="scrollbox flex h-[min(630px,96%)] min-h-0 w-full max-w-[420px] flex-col gap-2 overflow-y-auto border-4 border-black bg-[#1c2138] p-2 sm:p-3 shadow-[0_6px_0_#000]"
       >
         <header className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-2">
           <h2 className="text-[13px] text-[#f7a41d]" style={{ textShadow: "0 2px 0 #000" }}>
@@ -51,7 +51,7 @@ export function UpgradePanel({
           Build your defenses between sieges. Green tiles can be purchased immediately.
         </p>
 
-        <nav role="tablist" aria-label="Upgrade branches" className="grid grid-cols-3 gap-1 sm:grid-cols-5">
+        <nav aria-label="Upgrade branches" className="grid grid-cols-3 gap-1 sm:grid-cols-5">
           {tabs.map((tab) => {
             const active = activeTab === tab.key;
             const affordable = upgrades.some((upgrade) => upgrade.cat === tab.key && upgrade.buyable);
@@ -59,10 +59,7 @@ export function UpgradePanel({
               <button
                 type="button"
                 key={tab.key}
-                role="tab"
-                id={`sekarrow-tab-${tab.key}`}
-                aria-selected={active}
-                aria-controls="sekarrow-upgrade-tiles"
+                aria-pressed={active}
                 onClick={() => onTabChange(tab.key)}
                 className="relative flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-1 border-2 border-black px-1 py-1 text-[9px] leading-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
                 style={{ background: active ? "#ffd24a" : "#202642", color: active ? "#000" : "#e0e5f0" }}
@@ -81,10 +78,9 @@ export function UpgradePanel({
         </nav>
 
         <div
-          id="sekarrow-upgrade-tiles"
-          role="tabpanel"
-          aria-labelledby={`sekarrow-tab-${activeTab}`}
-          className="scrollbox min-h-0 flex-1 overflow-y-auto overscroll-contain border-2 border-black bg-[#262b44] p-2"
+          role="region"
+          aria-label="Available siege upgrades"
+          className="scrollbox min-h-[112px] flex-1 overflow-y-auto overscroll-contain border-2 border-black bg-[#262b44] p-2"
         >
           <div className="mb-2 flex items-center justify-between gap-2 text-[9px] leading-4">
             <span className="text-white/80">{tabs.find((tab) => tab.key === activeTab)?.name} DEFENSES</span>
