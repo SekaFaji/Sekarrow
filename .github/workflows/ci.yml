@@ -35,6 +35,19 @@ jobs:
             cp "$file" "patch/$file"
           done < <(git diff --name-only --diff-filter=ACMRT -z "$BASE_SHA" "$HEAD_SHA")
           git diff --name-only --diff-filter=D "$BASE_SHA" "$HEAD_SHA" > patch/PATCH_REMOVALS.txt
+      - name: Package full project source
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: git archive --format=zip --output=Sekarrow-Full-Project.zip "$HEAD_SHA"
+      - name: Upload full source archive
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sekarrow-Full-Project
+          path: Sekarrow-Full-Project.zip
+          if-no-files-found: error
       - name: Upload drop-in patch archive
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
