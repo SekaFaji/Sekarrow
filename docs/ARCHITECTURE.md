@@ -20,6 +20,9 @@ src/
 │       ├── ui/GameOverlays.tsx  # Reusable pause, quit and armory panels
 │       ├── ui/SettingsPanels.tsx # Settings and privacy presentation
 │       ├── ui/UpgradePanel.tsx  # Responsive, data-driven in-run upgrade UI
+│       ├── ui/KeepShopOverlay.tsx # Ruby packs and permanent perks UI
+│       ├── ui/CourtyardOverlay.tsx # Permanent town rendering
+│       ├── ui/HowToPlayOverlay.tsx # First-run instruction panel
 │       └── world/               # Memoized static terrain and fortress decor
 ├── game/
 │   ├── types.ts                   # Shared game and save-state types
@@ -46,7 +49,7 @@ src/
 
 ## Intentional limitations of the first cleanup
 
-The screen component is **still large** and includes menu orchestration, the courtyard scene, and animated world rendering; upgrade catalogs, purchase operations, settings/privacy panels, static terrain and fortress decor are now separate. The simulation and frame scheduler are now extracted, but the combat controller is still imperative and uses injected callbacks. Further decomposition of UI, isolating state transitions, expanding automated tests, expanding lint rules and test depth remain follow-up work. UI polish is now being handled separately without changing combat mechanics.
+The screen component is **still large** and includes menu orchestration, combat HUD, intermission screen, and animated world rendering; the courtyard, ruby shop, first-run help, upgrade catalogs, purchase operations, settings/privacy panels, static terrain and fortress decor are now separate. The simulation and frame scheduler are now extracted, but the combat controller is still imperative and uses injected callbacks. Further decomposition of UI, isolating state transitions, expanding automated tests, expanding lint rules and test depth remain follow-up work. UI polish is now being handled separately without changing combat mechanics.
 
 ## Rendering boundary (Patch 2)
 
@@ -79,6 +82,14 @@ The screen component is **still large** and includes menu orchestration, the cou
 - This is a presentation-only adjustment to existing panels, including the HUD, armory, courtyard, shop, tutorial, settings, and run summaries. No gameplay pricing or mechanics change.
 - Interactive pixel buttons retain their existing minimum tap target sizes; text wrapping and scrollable mobile panels from the previous patch remain enabled.
 - Because pixel fonts are unusually wide, review on a real 320px-wide phone before further increasing the font size.
+
+## Screen composition cleanup (UI extraction)
+
+- `Sekarrow.tsx` is smaller by roughly 240 lines. It now composes `HowToPlayOverlay`, `CourtyardOverlay` and `KeepShopOverlay` rather than containing their large inline JSX trees.
+- These components are presentational only. The main game screen still owns the selected town plot, tab selection, first-run flag, purchase callbacks, sounds and close actions. No purchase validation, saved-state fields or combat rules were moved.
+- All three overlays retain their mobile scroll and text-wrapping styles, and their relative rendering order and visibility conditions remain the same.
+- Regression tests cover the displayed tutorials, Ruby pack and perk catalogs, and five courtyard building plots. Existing layout tests now inspect the component that actually renders each panel.
+- This is a targeted extraction, not a completed architecture audit. The frame-level render of the main screen, large combat controller and remaining in-game HUD are still candidates for future measured refactoring.
 
 ## Changes requiring care
 
