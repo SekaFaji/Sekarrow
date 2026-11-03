@@ -22,7 +22,8 @@ test("between-wave menu buttons wrap instead of overflowing their panel", () => 
   const game = readFileSync("src/features/defense/Sekarrow.tsx", "utf8");
   assert.match(game, /className="flex w-full min-w-0 flex-wrap items-center justify-center gap-2"/);
   assert.match(game, /max-w-\[390px\] w-full max-h-full overflow-x-hidden overflow-y-auto/);
-  assert.match(game, /h-\[min\(620px,100%\)\]/);
+  const shop = readFileSync("src/features/defense/ui/KeepShopOverlay.tsx", "utf8");
+  assert.match(shop, /h-\[min\(620px,100%\)\]/);
 });
 
 test("shared upgrade cards stack phone actions under readable descriptions", () => {
