@@ -19,6 +19,7 @@ src/
 │       ├── upgrades/permanentPurchases.ts # Persistent upgrade transactions
 │       ├── ui/GameOverlays.tsx  # Reusable pause, quit and armory panels
 │       ├── ui/SettingsPanels.tsx # Settings and privacy presentation
+│       ├── ui/UpgradePanel.tsx  # Responsive, data-driven in-run upgrade UI
 │       └── world/               # Memoized static terrain and fortress decor
 ├── game/
 │   ├── types.ts                   # Shared game and save-state types
@@ -45,7 +46,7 @@ src/
 
 ## Intentional limitations of the first cleanup
 
-The screen component is **still large** and includes menu orchestration, the courtyard scene, and animated world rendering; upgrade catalogs, purchase operations, settings/privacy panels, static terrain and fortress decor are now separate. The simulation and frame scheduler are now extracted, but the combat controller is still imperative and uses injected callbacks. Further decomposition of UI, isolating state transitions, expanding automated tests, expanding lint rules and test depth remain follow-up work. No visual or mechanical redesign is part of this patch.
+The screen component is **still large** and includes menu orchestration, the courtyard scene, and animated world rendering; upgrade catalogs, purchase operations, settings/privacy panels, static terrain and fortress decor are now separate. The simulation and frame scheduler are now extracted, but the combat controller is still imperative and uses injected callbacks. Further decomposition of UI, isolating state transitions, expanding automated tests, expanding lint rules and test depth remain follow-up work. UI polish is now being handled separately without changing combat mechanics.
 
 ## Rendering boundary (Patch 2)
 
@@ -54,6 +55,14 @@ The screen component is **still large** and includes menu orchestration, the cou
 - Settings and privacy markup live in `SettingsPanels.tsx`. Storage, audio, and state transitions still belong to the main feature component.
 - Tests cover camera projection, memoized boundaries, and the extracted settings panels. CI still runs the existing combat and persistence checks.
 - The main screen continues to request a React update each animation frame. A more substantial renderer refactor should be benchmarked before altering animation cadence or combat behavior.
+
+## UI readability boundary (Patch 3)
+
+- The data-driven `UpgradePanel` receives the same purchase callbacks from `upgradeShop.ts`. Tapping an affordable tile still buys immediately. Its description panel is outside the grid scroll area so it stays visible when the list scrolls.
+- Five upgrade categories now fit in a responsive grid; tiles and costs use larger text, focus indicators and clearer locked/ready/maxed states. This does not change costs or unlock conditions.
+- The permanent courtyard shows its constructed-building count and exposes plot names, levels and costs to assistive technology. Local meta saves and purchases are unchanged.
+- Reusable pixel buttons and upgrade cards have larger tap targets and more readable labels. The viewport no longer disables browser zoom. A full browser/device layout check is still recommended.
+- Ruby-pack UI explicitly describes free testing packs, without changing the existing test-only grant behavior.
 
 ## Changes requiring care
 
