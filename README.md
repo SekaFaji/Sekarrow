@@ -67,6 +67,9 @@ src/
 │   ├── ui/GameOverlays.tsx    # Pause, quit and armory overlays
 │   ├── ui/SettingsPanels.tsx  # Settings and privacy panels
 │   ├── ui/UpgradePanel.tsx   # Responsive in-run purchase panel
+│   ├── ui/KeepShopOverlay.tsx  # Ruby packs and permanent perks presentation
+│   ├── ui/CourtyardOverlay.tsx # Town plots and selected-building UI
+│   ├── ui/HowToPlayOverlay.tsx # First-run instructions
 │   └── world/                # Memoized stationary scenery and structures
 ├── game/
 │   ├── types.ts                # Game types
@@ -86,7 +89,7 @@ The app uses **React, TypeScript, Vite and Tailwind CSS**, with a custom simulat
 
 ## Project status
 
-**Playable prototype / UI and architecture polish.** This is an independent learning and portfolio project by SekaFaji Games. The architecture has been modularized in stages; stationary scenery and settings panels are now isolated, although the main gameplay feature remains large and UI-heavy. Focused regression tests cover core invariants, but not full gameplay or browser behavior.
+**Playable prototype / UI and architecture polish.** This is an independent learning and portfolio project by SekaFaji Games. The architecture has been modularized in stages; stationary scenery, settings, first-run help, the permanent courtyard and the keep shop are now isolated, although the main gameplay feature still handles the combat HUD and run orchestration. Focused regression tests cover core invariants, but not full gameplay or browser behavior.
 
 The official project URL is [github.com/SekaFaji/Sekarrow](https://github.com/SekaFaji/Sekarrow), with a GitHub Pages base path of `/Sekarrow/`. Existing browser saves are migrated automatically from the former prototype's storage keys.
 
