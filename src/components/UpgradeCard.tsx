@@ -17,7 +17,7 @@ export function UpgradeCard({
   action,
   onClick,
 }: {
-  icon: string;
+  icon: React.ReactNode;
   name: string;
   desc: string;
   cost: string;
@@ -34,7 +34,7 @@ export function UpgradeCard({
     >
       <div className="min-w-0 flex-1 px-3 py-2">
         <div className="flex min-w-0 items-start gap-2">
-          <span className="shrink-0 text-sm leading-4" aria-hidden="true">{icon}</span>
+          <span className="flex h-5 w-5 shrink-0 items-center justify-center text-sm leading-4" aria-hidden="true">{icon}</span>
           <span className="min-w-0 flex-1 text-[9px] leading-[16px] text-white [overflow-wrap:anywhere]">
             {name}
           </span>
