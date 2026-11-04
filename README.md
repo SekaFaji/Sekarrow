@@ -46,7 +46,7 @@ The `tests/` directory contains regression coverage for input mapping, wave star
 ## Controls
 
 - **Hold and drag** in the battlefield to aim and fire arrows.
-- **Shop / Upgrades** to browse purchases; opening panels pauses combat. Green-bordered upgrades purchase immediately when tapped; selecting one also reveals its description below the tile grid.
+- **Shop / Upgrades** to browse purchases; opening panels pauses combat. Tap a siege upgrade to inspect its effects and current level, then press **BUY UPGRADE** in the detail panel to purchase.
 - **Next wave** after clearing the current wave.
 - **Pause** to interrupt a run.
 
@@ -78,7 +78,7 @@ src/
 │   ├── enemies.ts              # Enemy behavior and stats
 │   ├── state.ts                # New game state
 │   └── meta.ts                 # Permanent upgrades and persistence
-└── components/                 # Reusable pixel UI components
+└── components/                 # Reusable pixel UI components, including code-drawn PixelIcon
 ```
 
 The app uses **React, TypeScript, Vite and Tailwind CSS**, with a custom simulation loop rather than a separate game engine. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for boundaries, refactor decisions and remaining technical debt.
