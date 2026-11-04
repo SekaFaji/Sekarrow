@@ -6,16 +6,18 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { PixButton } from "../src/components/PixButton";
 import { UpgradeCard } from "../src/components/UpgradeCard";
 import { UpgradePanel } from "../src/features/defense/ui/UpgradePanel";
+import { PixelIcon, PIXEL_ICON_PATTERNS } from "../src/components/PixelIcon";
 import { UPGRADE_TABS, type UpgradeDefinition } from "../src/features/defense/upgrades/upgradeShop";
 
 function item(overrides: Partial<UpgradeDefinition> = {}): UpgradeDefinition {
   return {
     id: "power",
     cat: "bow",
-    icon: "➤",
+    icon: "arrow",
     short: "POWER",
     name: "BOW POWER",
     desc: "Stronger arrows make each shot deal more damage.",
+    levelLabel: "LEVEL 1/3",
     cost: 25,
     buyable: true,
     done: false,
@@ -47,6 +49,8 @@ test("siege upgrade panel has clear navigation and a persistent detail area", ()
   assert.match(markup, /CLOSE UPGRADES/);
   assert.match(markup, /Stronger arrows make each shot deal more damage/);
   assert.match(markup, /25 gold - READY/);
+  assert.match(markup, /CURRENT: LEVEL 1\/3/);
+  assert.match(markup, /BUY UPGRADE/);
 });
 
 test("tile states describe locked, ready, and maxed upgrades", () => {
@@ -55,7 +59,7 @@ test("tile states describe locked, ready, and maxed upgrades", () => {
     item({ id: "locked", short: "SHIELD", name: "FORCE SHIELD", buyable: false, lockTxt: "BUILD A TOWER FIRST" }),
     item({ id: "done", short: "PIERCE", name: "PIERCING", buyable: false, done: true, doneTxt: "MAXED" }),
   ]);
-  assert.match(markup, /Purchase now/);
+  assert.match(markup, /Select to buy/);
   assert.match(markup, /BUILD A TOWER FIRST/);
   assert.match(markup, /Maxed/);
   assert.match(markup, /25g/);
@@ -93,4 +97,25 @@ test("browser viewport allows accessible zoom while retaining the safe area", ()
   assert.match(html, /viewport-fit=cover/);
   assert.doesNotMatch(html, /user-scalable=no/);
   assert.doesNotMatch(html, /maximum-scale=1/);
+});
+
+test("upgrade tile only selects: purchase callback belongs to the bottom action", () => {
+  const source = readFileSync("src/features/defense/ui/UpgradePanel.tsx", "utf8");
+  assert.match(source, /onClick=\{\(\) => onSelect\(upgrade\.id\)\}/);
+  assert.match(source, /onClick=\{selected\.buy\}/);
+  assert.doesNotMatch(source, /if \(upgrade\.buyable\) upgrade\.buy\(\)/);
+});
+
+test("upgrade branch and tile icons use original pixel art rather than emoji glyphs", () => {
+  const source = readFileSync("src/features/defense/ui/UpgradePanel.tsx", "utf8");
+  const art = renderToStaticMarkup(createElement(PixelIcon, { name: "bow", size: 20 }));
+  assert.match(source, /<PixelIcon name=\{tab\.icon\}/);
+  assert.match(source, /<PixelIcon name=\{upgrade\.lockTxt/);
+  assert.match(art, /<svg/);
+  assert.match(art, /<rect/);
+  assert.equal(PIXEL_ICON_PATTERNS.bow.length, 8);
+  for (const rows of Object.values(PIXEL_ICON_PATTERNS)) {
+    assert.equal(rows.length, 8);
+    for (const row of rows) assert.equal(row.length, 8);
+  }
 });

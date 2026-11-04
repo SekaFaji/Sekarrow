@@ -2,9 +2,9 @@ import React from "react";
 import { PixButton } from "./PixButton";
 
 /**
- * Shared upgrade card used by the shop, armory, settings and courtyard.
- * On phones the action sits beneath the description so neither column
- * collapses to the point of clipping words. Desktop retains the side action.
+ * Shared card for permanent upgrades and the ruby shop.
+ * Keep the description and footer in separate, non-shrinking rows so prices
+ * and Buy buttons never overlap adjacent cards on narrow mobile screens.
  */
 export function UpgradeCard({
   icon,
@@ -29,8 +29,8 @@ export function UpgradeCard({
 }) {
   return (
     <div
-      className="sekarrow-upgrade-card flex w-full min-w-0 flex-col items-stretch border-2 border-black sm:flex-row"
-      style={{ background: "#202642", minHeight: 108 }}
+      className="sekarrow-upgrade-card flex w-full min-w-0 shrink-0 flex-col overflow-hidden border-2 border-black"
+      style={{ background: "#202642", minHeight: 118 }}
     >
       <div className="min-w-0 flex-1 px-3 py-2">
         <div className="flex min-w-0 items-start gap-2">
@@ -43,27 +43,25 @@ export function UpgradeCard({
           {desc}
         </div>
       </div>
-      <div
-        className="flex w-full min-w-0 shrink-0 flex-row items-center justify-between gap-2 border-t-2 border-black bg-[#1a1f33] px-2 py-1.5 sm:w-[114px] sm:flex-col sm:justify-center sm:border-l-2 sm:border-t-0"
-      >
+      <div className="flex min-h-[54px] min-w-0 shrink-0 items-center gap-2 border-t-2 border-black bg-[#1a1f33] px-3 py-2">
         {locked ? (
-          <span className="min-w-0 text-center text-[9px] leading-[15px] text-[#ffd76e] [overflow-wrap:anywhere]">
-            🔒 {locked}
+          <span className="w-full min-w-0 text-center text-[9px] leading-[15px] text-[#ffd76e] [overflow-wrap:anywhere]">
+            LOCKED - {locked}
           </span>
         ) : done ? (
-          <span className="min-w-0 text-center text-[9px] leading-[15px] text-[#7be58e] [overflow-wrap:anywhere]">
-            ✓ {done}
+          <span className="w-full min-w-0 text-center text-[9px] leading-[15px] text-[#7be58e] [overflow-wrap:anywhere]">
+            {done}
           </span>
         ) : (
           <>
-            {cost !== "" && (
-              <span className="min-w-0 text-center text-[9px] leading-[15px] text-[#ffd76e] [overflow-wrap:anywhere]">
-                {cost}
-              </span>
-            )}
-            <PixButton small color={disabled ? "#555c73" : "#4caf50"} onClick={onClick} disabled={disabled}>
-              {action || "BUY"}
-            </PixButton>
+            <span className="min-w-0 flex-1 text-left text-[9px] leading-[15px] text-[#ffd76e] [overflow-wrap:anywhere]">
+              {cost}
+            </span>
+            <div className="shrink-0">
+              <PixButton small color={disabled ? "#555c73" : "#4caf50"} onClick={onClick} disabled={disabled}>
+                {action || "BUY"}
+              </PixButton>
+            </div>
           </>
         )}
       </div>

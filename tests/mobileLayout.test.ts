@@ -34,7 +34,8 @@ test("shared upgrade cards stack phone actions under readable descriptions", () 
     cost: "180◆",
     action: "UPGRADE",
   }));
-  assert.match(html, /sm:flex-row/);
+  assert.match(html, /shrink-0 flex-col overflow-hidden/);
+  assert.match(html, /min-h-\[54px\]/);
   assert.match(html, /flex-col/);
   assert.match(html, /min-w-0/);
   assert.match(html, /overflow-wrap:anywhere/);

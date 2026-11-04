@@ -61,7 +61,7 @@ The screen component is **still large** and includes menu orchestration, combat 
 
 ## UI readability boundary (Patch 3)
 
-- The data-driven `UpgradePanel` receives the same purchase callbacks from `upgradeShop.ts`. Tapping an affordable tile still buys immediately. Its description panel is outside the grid scroll area so it stays visible when the list scrolls.
+- The data-driven `UpgradePanel` receives purchase callbacks from `upgradeShop.ts`. P5 changed tile interaction to select-first and a separate **BUY UPGRADE** action in its persistent detail panel. The grid still uses the existing catalog and buying logic.
 - Five upgrade categories now fit in a responsive grid; tiles and costs use larger text, focus indicators and clearer locked/ready/maxed states. This does not change costs or unlock conditions.
 - The permanent courtyard shows its constructed-building count and exposes plot names, levels and costs to assistive technology. Local meta saves and purchases are unchanged.
 - Reusable pixel buttons and upgrade cards have larger tap targets and more readable labels. The viewport no longer disables browser zoom. A full browser/device layout check is still recommended.
@@ -90,6 +90,14 @@ The screen component is **still large** and includes menu orchestration, combat 
 - All three overlays retain their mobile scroll and text-wrapping styles, and their relative rendering order and visibility conditions remain the same.
 - Regression tests cover the displayed tutorials, Ruby pack and perk catalogs, and five courtyard building plots. Existing layout tests now inspect the component that actually renders each panel.
 - This is a targeted extraction, not a completed architecture audit. The frame-level render of the main screen, large combat controller and remaining in-game HUD are still candidates for future measured refactoring.
+
+## Siege upgrade confirmation and pixel icons (P5)
+
+- `UpgradePanel` separates selection from purchasing. A tile tap only opens its detail; a deliberate `BUY UPGRADE` action calls the existing purchase callback. No costs, caps, or saved-state keys change.
+- Every upgrade definition reports a `levelLabel` for the selected detail and grid tile, including repeatable levels, unit slots, and repair HP state.
+- `PixelIcon` renders original 8x8 SVG pixel art for in-run upgrade tabs and tiles. This replaces device-dependent emoji in this panel while keeping icon definitions outside the simulation.
+- Shared `UpgradeCard` uses a non-shrinking vertical card and separate footer for the price and action. This prevents shop cards collapsing against adjacent cards on short phone screens.
+- Tests check the select/buy separation, icon data and mobile card layout. Manually check the ruby packs, perks, and upgrade level changes on a real device.
 
 ## Changes requiring care
 
