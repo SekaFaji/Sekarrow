@@ -12,6 +12,7 @@ import { readSave, writeSave } from "../../game/storage";
 import { type TownKey, loadMeta, saveMeta } from "../../game/meta";
 import { PixelSprite } from "../../components/PixelSprite";
 import { PixButton } from "../../components/PixButton";
+import { PixelIcon } from "../../components/PixelIcon";
 import { createCombatController } from "./combat/controller";
 import { createDefenseInputHandlers } from "./input/defenseInput";
 import { useGameAudio } from "./audio/useGameAudio";
@@ -905,7 +906,7 @@ export default function Sekarrow() {
                         color: tab === "shop" ? "#000" : "#8d99ae",
                       }}
                     >
-                      ⛒ SHOP
+                      <span className="inline-flex items-center gap-1"><PixelIcon name="shop" size={15} /> SHOP</span>
                     </button>
                     <button
                       onPointerDown={(e) => e.stopPropagation()}
@@ -916,7 +917,7 @@ export default function Sekarrow() {
                         color: tab === "upgrades" ? "#000" : "#8d99ae",
                       }}
                     >
-                      ⚒ UPGRADES
+                      <span className="inline-flex items-center gap-1"><PixelIcon name="gear" size={15} /> UPGRADES</span>
                     </button>
                   </div>
                   <button
@@ -928,7 +929,7 @@ export default function Sekarrow() {
                     className="border-2 border-black px-2 py-1 text-[8px] font-bold"
                     style={{ background: "#262b44", color: "#8d99ae" }}
                   >
-                    ⏸ PAUSE
+                    <span className="inline-flex items-center gap-1"><PixelIcon name="pause" size={15} /> PAUSE</span>
                   </button>
                 </div>
               )}
@@ -1190,13 +1191,13 @@ export default function Sekarrow() {
                   hold the line — one arrow at a time
                 </div>
                 <div className="text-[9px] text-white/80 text-center leading-[17px] pt-1">
-                  ★ BEST: {best} • 🏳 TOWNS: {meta.towns}
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="star" size={13} /> BEST: {best}</span> <span className="inline-flex items-center gap-1"><PixelIcon name="flag" size={13} /> TOWNS: {meta.towns}</span>
                   <br />
                   <span className="text-[#ffd24a]">⛁ {meta.gold} gold</span> •{" "}
                   <span className="text-[#ff8fa3]">♦ {meta.rubies} rubies</span>
                 </div>
                 <PixButton color="#4caf50" onClick={playPressed}>
-                  ▶ PLAY
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="play" size={17} /> PLAY</span>
                 </PixButton>
                 <div className="flex w-full min-w-0 flex-wrap gap-2 justify-center">
                   <PixButton
@@ -1207,7 +1208,7 @@ export default function Sekarrow() {
                       setMenuShop(true);
                     }}
                   >
-                    ⛒ SHOP
+                    <span className="inline-flex items-center gap-1"><PixelIcon name="shop" size={15} /> SHOP</span>
                   </PixButton>
                   <PixButton
                     small
@@ -1217,7 +1218,7 @@ export default function Sekarrow() {
                       setShowArmory(true);
                     }}
                   >
-                    ◆ ARMORY
+                    <span className="inline-flex items-center gap-1"><PixelIcon name="shield" size={15} /> ARMORY</span>
                   </PixButton>
                   <PixButton
                     small
@@ -1228,7 +1229,7 @@ export default function Sekarrow() {
                       setShowTown(true);
                     }}
                   >
-                    🏚 TOWN
+                    <span className="inline-flex items-center gap-1"><PixelIcon name="town" size={15} /> TOWN</span>
                   </PixButton>
                   <PixButton
                     small
@@ -1238,7 +1239,7 @@ export default function Sekarrow() {
                       setShowSettings(true);
                     }}
                   >
-                    ⚙ SETTINGS
+                    <span className="inline-flex items-center gap-1"><PixelIcon name="settings" size={15} /> SETTINGS</span>
                   </PixButton>
                 </div>
                 <span
@@ -1315,14 +1316,14 @@ export default function Sekarrow() {
                   color={tab === "shop" ? "#ffd24a" : "#8d99ae"}
                   onClick={() => setTab(tab === "shop" ? "none" : "shop")}
                 >
-                  ⛒ SHOP
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="shop" size={15} /> SHOP</span>
                 </PixButton>
                 <PixButton
                   small
                   color={tab === "upgrades" ? "#ffd24a" : "#8d99ae"}
                   onClick={() => setTab(tab === "upgrades" ? "none" : "upgrades")}
                 >
-                  ⚒ UPGRADES
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="gear" size={15} /> UPGRADES</span>
                 </PixButton>
                 <PixButton
                   small
@@ -1333,7 +1334,7 @@ export default function Sekarrow() {
                     setShowTown(true);
                   }}
                 >
-                  🏚 TOWN
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="town" size={15} /> TOWN</span>
                 </PixButton>
               </div>
 
@@ -1342,7 +1343,7 @@ export default function Sekarrow() {
               </div>
               {g.wave % 5 === 0 && (
                 <div className="text-[8px] text-[#ff8fa3]" style={{ textShadow: "0 2px 0 #000" }}>
-                  🏳 TOWN CONQUERED — permanent +2% kill gold!
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="flag" size={15} /> TOWN CONQUERED - permanent +2% kill gold!</span>
                 </div>
               )}
               <div className="text-[9px] text-[#ffd24a]">+{g.lastBonus} gold bonus</div>
@@ -1399,7 +1400,7 @@ export default function Sekarrow() {
                 {waveLabel(g.wave + 1)} ▶
               </PixButton>
               <PixButton small color="#8d6742" onClick={() => setQuitWarn(true)}>
-                ⌂ MAIN MENU
+                <span className="inline-flex items-center gap-1"><PixelIcon name="exit" size={15} /> MAIN MENU</span>
               </PixButton>
             </div>
           </div>
@@ -1514,11 +1515,11 @@ export default function Sekarrow() {
                 DEFEND AGAIN
               </PixButton>
               <PixButton color="#e05fd0" disabled={meta.rubies < 50} onClick={respawn}>
-                ♥ RESPAWN — 50 ♦
+                <span className="inline-flex items-center gap-1"><PixelIcon name="heart" size={17} /> RESPAWN - 50 RUBIES</span>
               </PixButton>
               <div className="flex flex-wrap items-center justify-center gap-2">
                 <PixButton color="#8d6742" small onClick={() => setShowArmory(true)}>
-                  ◆ ARMORY
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="shield" size={15} /> ARMORY</span>
                 </PixButton>
                 <PixButton
                   color="#8d6742"
@@ -1528,10 +1529,10 @@ export default function Sekarrow() {
                     setShowTown(true);
                   }}
                 >
-                  🏚 TOWN
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="town" size={15} /> TOWN</span>
                 </PixButton>
                 <PixButton color="#d9433b" small onClick={goMenu}>
-                  ⌂ MAIN MENU
+                  <span className="inline-flex items-center gap-1"><PixelIcon name="exit" size={15} /> MAIN MENU</span>
                 </PixButton>
               </div>
             </div>
