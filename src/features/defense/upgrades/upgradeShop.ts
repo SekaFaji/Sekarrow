@@ -1,4 +1,5 @@
 import type { Game, Meta } from "../../../game/types";
+import type { PixelIconName } from "../../../components/PixelIcon";
 import { saveMeta } from "../../../game/meta";
 
 /**
@@ -19,10 +20,11 @@ export type UpgradeCategory = "bow" | "turret" | "archer" | "worm" | "castle";
 export type UpgradeDefinition = {
   id: string;
   cat: UpgradeCategory;
-  icon: string;
+  icon: PixelIconName;
   short: string;
   name: string;
   desc: string;
+  levelLabel: string;
   cost: number;
   buyable: boolean;
   done: boolean;
@@ -34,12 +36,12 @@ export type UpgradeDefinition = {
 export const levelUpgradeCost = (level: number, base: number, step: number) =>
   base + step * level;
 
-export const UPGRADE_TABS: { key: UpgradeCategory; icon: string; name: string }[] = [
-  { key: "bow", icon: "🏹", name: "BOW" },
-  { key: "turret", icon: "⟠", name: "TURRET" },
-  { key: "archer", icon: "➶", name: "ARCHER" },
-  { key: "worm", icon: "🪱", name: "WORM" },
-  { key: "castle", icon: "🏰", name: "CASTLE" },
+export const UPGRADE_TABS: { key: UpgradeCategory; icon: PixelIconName; name: string }[] = [
+  { key: "bow", icon: "bow", name: "BOW" },
+  { key: "turret", icon: "turret", name: "TURRET" },
+  { key: "archer", icon: "archer", name: "ARCHER" },
+  { key: "worm", icon: "worm", name: "WORM" },
+  { key: "castle", icon: "castle", name: "CASTLE" },
 ];
 
 export function createUpgradeShop({
@@ -248,7 +250,7 @@ export function createUpgradeShop({
   const mk = (
     id: string,
     cat: CatKey,
-    icon: string,
+    icon: PixelIconName,
     short: string,
     label: string,
     desc: string,
@@ -268,6 +270,7 @@ export function createUpgradeShop({
       short,
       name: `${label} — LV ${lvl}`,
       desc,
+      levelLabel: `LEVEL ${lvl}/${max}`,
       cost,
       buyable: !locked && lvl < max && gc.gold >= cost,
       done: lvl >= max,
@@ -279,7 +282,7 @@ export function createUpgradeShop({
   const one = (
     id: string,
     cat: CatKey,
-    icon: string,
+    icon: PixelIconName,
     short: string,
     name: string,
     desc: string,
@@ -294,6 +297,7 @@ export function createUpgradeShop({
     short,
     name,
     desc,
+    levelLabel: built ? doneTxt : "NOT BUILT",
     cost,
     buyable: !built && gc.gold >= cost,
     done: built,
@@ -305,10 +309,11 @@ export function createUpgradeShop({
     {
       id: "dmg",
       cat: "bow",
-      icon: "⚔",
+      icon: "blade",
       short: "SHARPEN",
       name: `SHARPEN ARROWS — DMG ${gc.damage}`,
       desc: "Heavier heads: every arrow from your keep deals +1 damage.",
+      levelLabel: `DMG ${gc.damage}`,
       cost: dmgCost,
       buyable: gc.gold >= dmgCost,
       done: false,
@@ -317,10 +322,11 @@ export function createUpgradeShop({
     {
       id: "fletch",
       cat: "bow",
-      icon: "➤",
+      icon: "arrow",
       short: "FLETCHING",
       name: `FLETCHING — LV ${gc.rangeLvl}`,
       desc: "Better feathers: +12% flight range for all your arrows.",
+      levelLabel: `LEVEL ${gc.rangeLvl}`,
       cost: fletchCost,
       buyable: gc.gold >= fletchCost,
       done: false,
@@ -329,10 +335,11 @@ export function createUpgradeShop({
     {
       id: "eagle",
       cat: "bow",
-      icon: "✦",
+      icon: "eye",
       short: "EAGLE EYE",
       name: `EAGLE EYE — LV ${gc.dCritLvl}/3`,
       desc: "+6% chance of a distance crit — red arrows fly twice as far and deal double damage.",
+      levelLabel: `LEVEL ${gc.dCritLvl}/3`,
       cost: eagleCost,
       buyable: gc.gold >= eagleCost && gc.dCritLvl < 3,
       done: gc.dCritLvl >= 3,
@@ -341,37 +348,39 @@ export function createUpgradeShop({
     {
       id: "pierce",
       cat: "bow",
-      icon: "✧",
+      icon: "pierce",
       short: "PIERCE",
       name: `PIERCING TIPS — LV ${gc.pierceLvl}/5`,
       desc: "+10% chance arrows punch straight through the first enemy and keep flying.",
+      levelLabel: `LEVEL ${gc.pierceLvl}/5`,
       cost: pierceCost,
       buyable: gc.gold >= pierceCost && gc.pierceLvl < 5,
       done: gc.pierceLvl >= 5,
       buy: buyPierce,
     },
-    mk("rapid", "bow", "⚡", "RAPID", "RAPID HANDS", "Faster loosing: your keep fires 15% quicker per level while you hold.", "rapidLvl", 3, 50, 35),
-    mk("double", "bow", "⧉", "DOUBLE", "DOUBLE-STRING", "+8% chance per level to loose a second arrow with every single shot.", "doubleLvl", 3, 60, 45),
-    mk("splash", "bow", "💥", "BOOM", "EXPLOSIVE TIPS", "Oil-soaked heads: arrows burst for 30% splash damage per level to nearby enemies.", "splashLvl", 3, 90, 70),
-    mk("volley", "bow", "☄", "VOLLEY", "ARROW VOLLEY", "The keep looses 2+level arrows at random enemies every 9 seconds. On its own, no aiming needed.", "volleyLvl", 3, 100, 80),
-    one("turret", "turret", "⟠", "TURRET", `BUILD TURRET — ${gc.turrets}/${4 + 2 * gc.towers}`, "A wall-mounted turret fires where you aim. With AUTO SHOOT it hunts the sky.", turretCost, gc.turrets >= 4 + 2 * gc.towers, buyTurret, "ALL SLOTS FULL"),
-    mk("tdmg", "turret", "⬆", "HEAVY", "HEAVY BOLTS", "Dense iron bolts: +1 damage per level on every turret and worm shot.", "turretDmgLvl", 3, 40, 25, gc.turrets < 1 ? "BUILD A TURRET FIRST" : undefined),
-    mk("trate", "turret", "⚙", "BARRELS", "RAPID BARRELS", "Oiled gears: turrets reload 20% faster per level.", "turretRateLvl", 3, 45, 30, gc.turrets < 1 ? "BUILD A TURRET FIRST" : undefined),
-    mk("trange", "turret", "➤", "LONG", "LONG BARRELS", "Extended barrels: +10% turret range per level.", "turretRangeLvl", 3, 40, 25, gc.turrets < 1 ? "BUILD A TURRET FIRST" : undefined),
-    one("archer", "archer", "➶", "ARCHER", `RECRUIT ARCHER — ${gc.archers}/${4 + 2 * gc.towers}`, "A ground archer flanks the keep and fires where you aim. With AUTO SHOOT they hunt the grass.", archerCost, gc.archers >= 4 + 2 * gc.towers, buyArcher, "ALL SLOTS FULL"),
-    mk("admg", "archer", "⬆", "BROAD", "BROADHEADS", "Wider heads: +1 damage per level on every archer arrow.", "archerDmgLvl", 3, 40, 25, gc.archers < 1 ? "RECRUIT AN ARCHER FIRST" : undefined),
-    mk("arate", "archer", "⚡", "QUICK", "QUICK DRAW", "Fast hands: archers loose 20% more arrows per level.", "archerRateLvl", 3, 45, 30, gc.archers < 1 ? "RECRUIT AN ARCHER FIRST" : undefined),
-    mk("arange", "archer", "➤", "EAGLE A.", "EAGLE ARCHERS", "Sharper eyes: +10% archer range per level.", "archerRangeLvl", 3, 40, 25, gc.archers < 1 ? "RECRUIT AN ARCHER FIRST" : undefined),
-    one("worm", "worm", "🪱", "WORM", `BUILD EARTHWORM — ${gc.worms}/${2 + 2 * gc.towers}`, "A tunneling turret in the dirt — the ONLY unit that can shoot underground enemies. Moles arrive at wave 10!", wormCost, gc.worms >= 2 + 2 * gc.towers, buyWorm, "ALL SLOTS FULL"),
-    mk("wrate", "worm", "🪱", "SEGMENTS", "THICKER SEGMENTS", "Fatter worms, faster burrow-shots: worms reload 25% quicker per level.", "wormRateLvl", 3, 45, 30, gc.worms < 1 ? "BUILD A WORM FIRST" : undefined),
+    mk("rapid", "bow", "bolt", "RAPID", "RAPID HANDS", "Faster loosing: your keep fires 15% quicker per level while you hold.", "rapidLvl", 3, 50, 35),
+    mk("double", "bow", "double", "DOUBLE", "DOUBLE-STRING", "+8% chance per level to loose a second arrow with every single shot.", "doubleLvl", 3, 60, 45),
+    mk("splash", "bow", "burst", "BOOM", "EXPLOSIVE TIPS", "Oil-soaked heads: arrows burst for 30% splash damage per level to nearby enemies.", "splashLvl", 3, 90, 70),
+    mk("volley", "bow", "volley", "VOLLEY", "ARROW VOLLEY", "The keep looses 2+level arrows at random enemies every 9 seconds. On its own, no aiming needed.", "volleyLvl", 3, 100, 80),
+    { ...one("turret", "turret", "turret", "TURRET", `BUILD TURRET — ${gc.turrets}/${4 + 2 * gc.towers}`, "A wall-mounted turret fires where you aim. With AUTO SHOOT it hunts the sky.", turretCost, gc.turrets >= 4 + 2 * gc.towers, buyTurret, "ALL SLOTS FULL"), levelLabel: `SLOTS ${gc.turrets}/${4 + 2 * gc.towers}` },
+    mk("tdmg", "turret", "heavy", "HEAVY", "HEAVY BOLTS", "Dense iron bolts: +1 damage per level on every turret and worm shot.", "turretDmgLvl", 3, 40, 25, gc.turrets < 1 ? "BUILD A TURRET FIRST" : undefined),
+    mk("trate", "turret", "gear", "BARRELS", "RAPID BARRELS", "Oiled gears: turrets reload 20% faster per level.", "turretRateLvl", 3, 45, 30, gc.turrets < 1 ? "BUILD A TURRET FIRST" : undefined),
+    mk("trange", "turret", "arrow", "LONG", "LONG BARRELS", "Extended barrels: +10% turret range per level.", "turretRangeLvl", 3, 40, 25, gc.turrets < 1 ? "BUILD A TURRET FIRST" : undefined),
+    { ...one("archer", "archer", "archer", "ARCHER", `RECRUIT ARCHER — ${gc.archers}/${4 + 2 * gc.towers}`, "A ground archer flanks the keep and fires where you aim. With AUTO SHOOT they hunt the grass.", archerCost, gc.archers >= 4 + 2 * gc.towers, buyArcher, "ALL SLOTS FULL"), levelLabel: `SLOTS ${gc.archers}/${4 + 2 * gc.towers}` },
+    mk("admg", "archer", "heavy", "BROAD", "BROADHEADS", "Wider heads: +1 damage per level on every archer arrow.", "archerDmgLvl", 3, 40, 25, gc.archers < 1 ? "RECRUIT AN ARCHER FIRST" : undefined),
+    mk("arate", "archer", "bolt", "QUICK", "QUICK DRAW", "Fast hands: archers loose 20% more arrows per level.", "archerRateLvl", 3, 45, 30, gc.archers < 1 ? "RECRUIT AN ARCHER FIRST" : undefined),
+    mk("arange", "archer", "eye", "EAGLE A.", "EAGLE ARCHERS", "Sharper eyes: +10% archer range per level.", "archerRangeLvl", 3, 40, 25, gc.archers < 1 ? "RECRUIT AN ARCHER FIRST" : undefined),
+    { ...one("worm", "worm", "worm", "WORM", `BUILD EARTHWORM — ${gc.worms}/${2 + 2 * gc.towers}`, "A tunneling turret in the dirt — the ONLY unit that can shoot underground enemies. Moles arrive at wave 10!", wormCost, gc.worms >= 2 + 2 * gc.towers, buyWorm, "ALL SLOTS FULL"), levelLabel: `SLOTS ${gc.worms}/${2 + 2 * gc.towers}` },
+    mk("wrate", "worm", "worm", "SEGMENTS", "THICKER SEGMENTS", "Fatter worms, faster burrow-shots: worms reload 25% quicker per level.", "wormRateLvl", 3, 45, 30, gc.worms < 1 ? "BUILD A WORM FIRST" : undefined),
     /* 🏰 YOUR TOWN */
     {
       id: "fortify",
       cat: "castle",
-      icon: "▲",
+      icon: "fortify",
       short: "FORTIFY",
       name: `FORTIFY — LV ${gc.fortLvl}`,
       desc: "Thicker walls: +20 max castle HP per level — and the keep grows a little taller.",
+      levelLabel: `LEVEL ${gc.fortLvl}`,
       cost: fortCost,
       buyable: gc.gold >= fortCost,
       done: false,
@@ -380,32 +389,34 @@ export function createUpgradeShop({
     {
       id: "repair",
       cat: "castle",
-      icon: "✚",
+      icon: "repair",
       short: "REPAIR",
       name: "REPAIR",
       desc: "Masons patch the cracks: restore 35 HP right now. Cheap and always useful.",
+      levelLabel: `HP ${Math.round(gc.hp)}/${gc.maxHp}`,
       cost: 12,
       buyable: gc.gold >= 12 && gc.hp < gc.maxHp,
       done: gc.hp >= gc.maxHp,
       doneTxt: "FULL HP",
       buy: buyRepair,
     },
-    mk("masonry", "castle", "🧱", "MASONRY", "MASONRY", "Living stone: the castle slowly repairs itself, 0.8 HP/s per level.", "repairLvl", 3, 60, 45),
+    mk("masonry", "castle", "brick", "MASONRY", "MASONRY", "Living stone: the castle slowly repairs itself, 0.8 HP/s per level.", "repairLvl", 3, 60, 45),
     {
       id: "shield",
       cat: "castle",
-      icon: "⛨",
+      icon: "shield",
       short: "SHIELD",
       name: `FORCE SHIELD — LV ${gc.shieldLvl}/3`,
       desc: "A bubble around the keep soaks 30 damage per level and fully regenerates between waves.",
+      levelLabel: `LEVEL ${gc.shieldLvl}/3`,
       cost: shieldCost,
       buyable: gc.gold >= shieldCost && gc.shieldLvl < 3,
       done: gc.shieldLvl >= 3,
       buy: buyShield,
     },
-    mk("thorn", "castle", "🗡", "THORNS", "THORNY WALLS", "Spiked masonry zaps every enemy that bites your gate for 2 + 2×level damage.", "thornLvl", 3, 40, 30),
-    one("tower", "castle", "🏰", "TOWER", `BUILD TOWER — ${gc.towers}/4`, "A tower rises on the LEFT and RIGHT flanks of the keep: +2 turret, archer AND earthworm slots each.", towerCost, gc.towers >= 4, buyTower, "ALL TOWERS BUILT"),
-    mk("lookout", "castle", "👁", "LOOKOUT", "LOOKOUT POSTS", "Watchmen in every tower: your whole garrison fires 6% faster per level.", "towerLvl", 3, 70, 50, gc.towers < 1 ? "BUILD A TOWER FIRST" : undefined),
+    mk("thorn", "castle", "thorn", "THORNS", "THORNY WALLS", "Spiked masonry zaps every enemy that bites your gate for 2 + 2×level damage.", "thornLvl", 3, 40, 30),
+    { ...one("tower", "castle", "castle", "TOWER", `BUILD TOWER — ${gc.towers}/4`, "A tower rises on the LEFT and RIGHT flanks of the keep: +2 turret, archer AND earthworm slots each.", towerCost, gc.towers >= 4, buyTower, "ALL TOWERS BUILT"), levelLabel: `TOWERS ${gc.towers}/4` },
+    mk("lookout", "castle", "lookout", "LOOKOUT", "LOOKOUT POSTS", "Watchmen in every tower: your whole garrison fires 6% faster per level.", "towerLvl", 3, 70, 50, gc.towers < 1 ? "BUILD A TOWER FIRST" : undefined),
   ];
 
   const TABS = UPGRADE_TABS;
