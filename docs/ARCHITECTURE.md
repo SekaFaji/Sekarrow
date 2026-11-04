@@ -91,6 +91,14 @@ The screen component is **still large** and includes menu orchestration, combat 
 - Regression tests cover the displayed tutorials, Ruby pack and perk catalogs, and five courtyard building plots. Existing layout tests now inspect the component that actually renders each panel.
 - This is a targeted extraction, not a completed architecture audit. The frame-level render of the main screen, large combat controller and remaining in-game HUD are still candidates for future measured refactoring.
 
+## Siege upgrade confirmation and pixel icons (P5)
+
+- `UpgradePanel` separates selection from purchasing. A tile tap only opens its detail; a deliberate `BUY UPGRADE` action calls the existing purchase callback. No costs, caps, or saved-state keys change.
+- Every upgrade definition reports a `levelLabel` for the selected detail and grid tile, including repeatable levels, unit slots, and repair HP state.
+- `PixelIcon` renders original 8x8 SVG pixel art for in-run upgrade tabs and tiles. This replaces device-dependent emoji in this panel while keeping icon definitions outside the simulation.
+- Shared `UpgradeCard` uses a non-shrinking vertical card and separate footer for the price and action. This prevents shop cards collapsing against adjacent cards on short phone screens.
+- Tests check the select/buy separation, icon data and mobile card layout. Manually check the ruby packs, perks, and upgrade level changes on a real device.
+
 ## Changes requiring care
 
 - Any future save-key or schema changes must preserve existing progress and be tested as migrations.
