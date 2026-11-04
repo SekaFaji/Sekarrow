@@ -1,9 +1,11 @@
+import { PixButton } from "../../../components/PixButton";
+import { PixelIcon, type PixelIconName } from "../../../components/PixelIcon";
 import type { UpgradeCategory, UpgradeDefinition } from "../upgrades/upgradeShop";
 
 interface UpgradePanelProps {
   gold: number;
   upgrades: UpgradeDefinition[];
-  tabs: { key: UpgradeCategory; icon: string; name: string }[];
+  tabs: { key: UpgradeCategory; icon: PixelIconName; name: string }[];
   activeTab: UpgradeCategory;
   selectedId: string | null;
   onTabChange: (tab: UpgradeCategory) => void;
@@ -19,8 +21,8 @@ const stateLabel = (upgrade: UpgradeDefinition) => {
 };
 
 /**
- * Presentation only. Selecting a ready tile purchases the upgrade immediately,
- * exactly as in the original shop. Each definition retains its own buy callback.
+ * Presentation only. Selecting a tile only highlights it.
+ * Buying requires the explicit button in the bottom detail panel.
  * The detail pane stays outside the scrolling grid so descriptions remain visible.
  */
 export function UpgradePanel({
@@ -40,15 +42,15 @@ export function UpgradePanel({
       >
         <header className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-2">
           <h2 className="text-[12px] text-[#f7a41d]" style={{ textShadow: "0 2px 0 #000" }}>
-            ⚒ UPGRADES
+            UPGRADES
           </h2>
           <span className="border-2 border-black bg-[#262b44] px-2 py-2 text-[9px] text-[#ffd24a]">
-            ⛁ {gold} GOLD
+            ◆ {gold} GOLD
           </span>
         </header>
 
         <p className="text-[8px] leading-[15px] text-white/75">
-          Build your defenses between sieges. Green tiles can be purchased immediately.
+          Select an upgrade to inspect it. Buy from the info panel when ready.
         </p>
 
         <nav aria-label="Upgrade branches" className="grid grid-cols-3 gap-1 sm:grid-cols-5">
@@ -64,7 +66,7 @@ export function UpgradePanel({
                 className="relative flex min-h-[44px] min-w-0 flex-col items-center justify-center gap-1 border-2 border-black px-1 py-1 text-[8px] leading-[13px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
                 style={{ background: active ? "#ffd24a" : "#202642", color: active ? "#000" : "#e0e5f0" }}
               >
-                <span className="text-[15px] leading-4" aria-hidden="true">{tab.icon}</span>
+                <PixelIcon name={tab.icon} size={20} />
                 <span>{tab.name}</span>
                 {affordable && (
                   <span
@@ -95,28 +97,25 @@ export function UpgradePanel({
                   key={upgrade.id}
                   type="button"
                   aria-pressed={active}
-                  aria-label={`${upgrade.name}. ${upgrade.done ? "Maxed" : upgrade.lockTxt ? upgrade.lockTxt : `${upgrade.cost} gold. ${upgrade.buyable ? "Purchase now" : "Not enough gold"}`}`}
+                  aria-label={`${upgrade.name}. ${upgrade.done ? "Maxed" : upgrade.lockTxt ? upgrade.lockTxt : `${upgrade.cost} gold. ${upgrade.buyable ? "Select to buy" : "Not enough gold"}`}`}
                   title={upgrade.desc}
-                  onClick={() => {
-                    onSelect(upgrade.id);
-                    if (upgrade.buyable) upgrade.buy();
-                  }}
-                  className="flex min-h-[94px] min-w-0 flex-col items-center justify-between gap-1 border-2 px-1 py-2 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
+                  onClick={() => onSelect(upgrade.id)}
+                  className="flex min-h-[102px] min-w-0 flex-col items-center justify-between gap-1 border-2 px-1 py-2 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd24a]"
                   style={{
                     background: active ? "#303d60" : upgrade.done ? "#191f32" : "#202642",
                     borderColor: active ? "#ffd24a" : upgrade.buyable ? "#4caf50" : "#090b15",
                     opacity: upgrade.lockTxt ? 0.72 : 1,
                   }}
                 >
-                  <span className="text-lg leading-5" aria-hidden="true">{upgrade.lockTxt ? "🔒" : upgrade.icon}</span>
+                  <PixelIcon name={upgrade.lockTxt ? "lock" : upgrade.icon} size={24} />
                   <span className="w-full min-w-0 text-[8px] leading-[13px] text-white [overflow-wrap:anywhere]">{upgrade.short}</span>
+                  <span className="text-[8px] leading-3 text-[#aab2cb]">{upgrade.levelLabel}</span>
                   <span
                     className="text-[8px] leading-3"
                     style={{ color: upgrade.done ? "#7be58e" : upgrade.lockTxt ? "#d3b76c" : upgrade.buyable ? "#7be58e" : "#aab2cb" }}
                   >
                     {upgrade.done ? "MAX" : upgrade.lockTxt ? "LOCKED" : `${upgrade.cost}g`}
                   </span>
-                  {upgrade.buyable && <span className="text-[8px] leading-3 text-[#7be58e]">BUY</span>}
                 </button>
               );
             })}
@@ -124,25 +123,43 @@ export function UpgradePanel({
         </div>
 
         <div
-          className="min-h-[92px] min-w-0 shrink-0 border-2 border-black bg-[#181d2f] px-3 py-2"
+          className="min-h-[118px] min-w-0 shrink-0 border-2 border-black bg-[#181d2f] px-3 py-2"
           aria-live="polite"
         >
           {selected ? (
-            <>
-              <div className="text-[9px] leading-[15px] text-white">{selected.icon} {selected.name}</div>
-              <div className="pt-1 text-[8px] leading-[14px] text-white/80">{selected.desc}</div>
-              <div className="pt-1 text-[8px] leading-[14px] text-[#ffd24a]">
-                {selected.done
-                  ? `✓ ${selected.doneTxt || "MAXED"}`
-                  : selected.lockTxt
-                  ? `🔒 ${selected.lockTxt}`
-                  : `${selected.cost} gold - ${stateLabel(selected)}`}
+            <div className="flex min-h-[100px] flex-col gap-2">
+              <div className="flex min-w-0 items-start gap-2">
+                <PixelIcon name={selected.icon} size={20} />
+                <div className="min-w-0 flex-1">
+                  <div className="text-[9px] leading-[15px] text-white [overflow-wrap:anywhere]">{selected.name}</div>
+                  <div className="pt-1 text-[8px] leading-[14px] text-[#aab2cb]">CURRENT: {selected.levelLabel}</div>
+                </div>
               </div>
-            </>
+              <div className="text-[8px] leading-[14px] text-white/80 [overflow-wrap:anywhere]">{selected.desc}</div>
+              <div className="mt-auto flex flex-wrap items-center justify-between gap-2">
+                <div className="min-w-0 flex-1 text-[8px] leading-[14px] text-[#ffd24a] [overflow-wrap:anywhere]">
+                  {selected.done
+                    ? selected.doneTxt || "MAXED"
+                    : selected.lockTxt
+                    ? `LOCKED - ${selected.lockTxt}`
+                    : `${selected.cost} gold - ${stateLabel(selected)}`}
+                </div>
+                {!selected.done && !selected.lockTxt && (
+                  <PixButton
+                    small
+                    color={selected.buyable ? "#4caf50" : "#555c73"}
+                    onClick={selected.buy}
+                    disabled={!selected.buyable}
+                  >
+                    BUY UPGRADE
+                  </PixButton>
+                )}
+              </div>
+            </div>
           ) : (
-            <div className="flex min-h-[72px] flex-col justify-center gap-2 text-[8px] leading-[15px] text-white/75">
-              <span>Select an upgrade to see its effect and cost.</span>
-              <span className="text-[#ffd24a]">Green border = tap to buy immediately.</span>
+            <div className="flex min-h-[92px] flex-col justify-center gap-2 text-[8px] leading-[15px] text-white/75">
+              <span>Select an upgrade tile to inspect its effect and current level.</span>
+              <span className="text-[#ffd24a]">Green border = ready to buy from the info panel.</span>
             </div>
           )}
         </div>
