@@ -1193,8 +1193,8 @@ export default function Sekarrow() {
                 <div className="text-[9px] text-white/80 text-center leading-[17px] pt-1">
                   <span className="inline-flex items-center gap-1"><PixelIcon name="star" size={13} /> BEST: {best}</span> <span className="inline-flex items-center gap-1"><PixelIcon name="flag" size={13} /> TOWNS: {meta.towns}</span>
                   <br />
-                  <span className="text-[#ffd24a]">⛁ {meta.gold} gold</span> •{" "}
-                  <span className="text-[#ff8fa3]">♦ {meta.rubies} rubies</span>
+                  <span className="inline-flex items-center gap-1 text-[#ffd24a]"><PixelIcon name="coin" size={13} /> {meta.gold} gold</span> •{" "}
+                  <span className="inline-flex items-center gap-1 text-[#ff8fa3]"><PixelIcon name="ruby" size={13} /> {meta.rubies} rubies</span>
                 </div>
                 <PixButton color="#4caf50" onClick={playPressed}>
                   <span className="inline-flex items-center gap-1"><PixelIcon name="play" size={17} /> PLAY</span>
