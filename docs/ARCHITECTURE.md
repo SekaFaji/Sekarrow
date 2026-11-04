@@ -61,7 +61,7 @@ The screen component is **still large** and includes menu orchestration, combat 
 
 ## UI readability boundary (Patch 3)
 
-- The data-driven `UpgradePanel` receives the same purchase callbacks from `upgradeShop.ts`. Tapping an affordable tile still buys immediately. Its description panel is outside the grid scroll area so it stays visible when the list scrolls.
+- The data-driven `UpgradePanel` receives purchase callbacks from `upgradeShop.ts`. P5 changed tile interaction to select-first and a separate **BUY UPGRADE** action in its persistent detail panel. The grid still uses the existing catalog and buying logic.
 - Five upgrade categories now fit in a responsive grid; tiles and costs use larger text, focus indicators and clearer locked/ready/maxed states. This does not change costs or unlock conditions.
 - The permanent courtyard shows its constructed-building count and exposes plot names, levels and costs to assistive technology. Local meta saves and purchases are unchanged.
 - Reusable pixel buttons and upgrade cards have larger tap targets and more readable labels. The viewport no longer disables browser zoom. A full browser/device layout check is still recommended.
