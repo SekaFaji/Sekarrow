@@ -1,5 +1,5 @@
 /**
- * Original, code-drawn 8x8 pixel art for the upgrade interface.
+ * Original, code-drawn 8x8 pixel art for upgrade and menu interfaces.
  * Using SVG rects avoids platform emoji and keeps icons sharp on all devices.
  * These are UI assets only, not gameplay definitions.
  */
@@ -222,6 +222,246 @@ export const PIXEL_ICON_PATTERNS = {
     ".sggggs.",
     ".sg..gs.",
     ".ssssss.",
+    "........"
+  ],
+  "shop": [
+    "gggggggg",
+    "gwwwwwwg",
+    "gggggggg",
+    "nnnnnnnn",
+    "nwwwswwn",
+    "nwwwswwn",
+    "nwwwwwwn",
+    "nnnnnnnn"
+  ],
+  "pack": [
+    "........",
+    "..nnnn..",
+    ".nnggnn.",
+    ".nnggnn.",
+    ".nnnnnn.",
+    ".nnggnn.",
+    "..nnnn..",
+    "........"
+  ],
+  "chest": [
+    "........",
+    ".nnnnnn.",
+    ".nnggnn.",
+    ".dddddd.",
+    ".nnggnn.",
+    ".nnnnnn.",
+    ".nnnnnn.",
+    "........"
+  ],
+  "vault": [
+    "..ssss..",
+    ".swwwws.",
+    ".sdddds.",
+    ".sdggds.",
+    ".sdggds.",
+    ".sdddds.",
+    ".ssssss.",
+    "........"
+  ],
+  "perk": [
+    "...g....",
+    "...g....",
+    ".g.g.g..",
+    "..ggg...",
+    "ggggggg.",
+    "..ggg...",
+    ".g.g.g..",
+    "...g...."
+  ],
+  "ruby": [
+    "...p....",
+    "..ppp...",
+    "..pwp...",
+    "ppwwpp..",
+    ".pppp...",
+    "..pp....",
+    "...p....",
+    "........"
+  ],
+  "coin": [
+    "..gggg..",
+    ".ggwwgg.",
+    "ggwwwwgg",
+    "ggwwwwgg",
+    "ggwwwwgg",
+    "ggwwwwgg",
+    ".ggwwgg.",
+    "..gggg.."
+  ],
+  "town": [
+    "...gg...",
+    "..gggg..",
+    ".gggggg.",
+    "nnnnnnnn",
+    "nwwsswwn",
+    "nwwsswwn",
+    "nwwsswwn",
+    "nnnnnnn."
+  ],
+  "settings": [
+    "..s.ss..",
+    ".ssssss.",
+    "sssksss.",
+    "sskksss.",
+    ".ssssss.",
+    "..ssss..",
+    "...ss...",
+    "........"
+  ],
+  "sound": [
+    "..ss....",
+    "..sss...",
+    "ssssw...",
+    "ssssww..",
+    "ssssw...",
+    "..sss...",
+    "..ss....",
+    "........"
+  ],
+  "document": [
+    ".ssssss.",
+    ".swwwws.",
+    ".swddws.",
+    ".swwwws.",
+    ".swddws.",
+    ".swwwws.",
+    ".ssssss.",
+    "........"
+  ],
+  "restore": [
+    "...ggg..",
+    "..g...g.",
+    ".g....g.",
+    "gg...g..",
+    "g...g...",
+    "g...g...",
+    "..ggg...",
+    "........"
+  ],
+  "pause": [
+    "........",
+    ".ss..ss.",
+    ".ss..ss.",
+    ".ss..ss.",
+    ".ss..ss.",
+    ".ss..ss.",
+    ".ss..ss.",
+    "........"
+  ],
+  "play": [
+    "s.......",
+    "sss.....",
+    "sssss...",
+    "sssssss.",
+    "sssssss.",
+    "sssss...",
+    "sss.....",
+    "s......."
+  ],
+  "warning": [
+    "...gg...",
+    "..gggg..",
+    "..gggg..",
+    ".gggggg.",
+    ".gggggg.",
+    "gggkkggg",
+    "gggggggg",
+    "........"
+  ],
+  "star": [
+    "...g....",
+    ".g.g.g..",
+    "..ggg...",
+    "ggggggg.",
+    "..ggg...",
+    ".g.g.g..",
+    "...g....",
+    "........"
+  ],
+  "crate": [
+    "nnnnnnnn",
+    "nwwnnwwn",
+    "nwwnnwwn",
+    "nwwnnwwn",
+    "nwwnnwwn",
+    "nwwnnwwn",
+    "nwwnnwwn",
+    "nnnnnnnn"
+  ],
+  "cloud": [
+    "........",
+    "..ssss..",
+    ".ssssss.",
+    "ssssssss",
+    "ssssssss",
+    ".ssssss.",
+    "........",
+    "........"
+  ],
+  "tunnel": [
+    "nnnnnnnn",
+    "nnnnnnnn",
+    "nnn..nnn",
+    "nn....nn",
+    "n......n",
+    "n......n",
+    "........",
+    "........"
+  ],
+  "boss": [
+    "..gggg..",
+    ".gggggg.",
+    "ggswwsgg",
+    "ggsggsgg",
+    "ggsggsgg",
+    "gggggggg",
+    ".gggggg.",
+    "..gggg.."
+  ],
+  "elite": [
+    "..gggg..",
+    ".gwwwwg.",
+    "gwwggwwg",
+    "gwwggwwg",
+    "gwwggwwg",
+    ".gwwwwg.",
+    "..gggg..",
+    "........"
+  ],
+  "flag": [
+    "..r.....",
+    "..rrrr..",
+    "..rwwrr.",
+    "..rrrr..",
+    "..r.....",
+    "..r.....",
+    "..r.....",
+    "..r....."
+  ],
+  "exit": [
+    "nnnnnnnn",
+    "nwwwwwwn",
+    "nwwwgwwn",
+    "nwwgggwn",
+    "nwgwwwwn",
+    "nwwgggwn",
+    "nwwwgwwn",
+    "nnnnnnnn"
+  ],
+  "heart": [
+    "........",
+    ".rr..rr.",
+    "rrrrrrrr",
+    "rrrrrrrr",
+    ".rrrrrr.",
+    "..rrrr..",
+    "...rr...",
     "........"
   ]
 } as const;

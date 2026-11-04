@@ -2,6 +2,16 @@ import type { Meta } from "../../../game/types";
 import { META_UPGRADES } from "../../../game/meta";
 import { PixButton } from "../../../components/PixButton";
 import { UpgradeCard } from "../../../components/UpgradeCard";
+import { PixelIcon, type PixelIconName } from "../../../components/PixelIcon";
+
+const ARMORY_ICONS: Partial<Record<keyof Meta, PixelIconName>> = {
+  walls: "shield",
+  fletcher: "arrow",
+  longbow: "bow",
+  eagle: "eye",
+  chest: "coin",
+  engineer: "gear",
+};
 
 /** Paused-run overlay; presentation only, actions remain owned by the screen. */
 export function PauseOverlay({ onResume, onMainMenu }: {
@@ -15,13 +25,13 @@ export function PauseOverlay({ onResume, onMainMenu }: {
     >
       <div className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-3 overflow-x-hidden overflow-y-auto border-4 border-black bg-[#1c2138] p-3 sm:p-4">
         <div className="text-center text-[12px] text-[#ffd24a]" style={{ textShadow: "0 2px 0 #000" }}>
-          ⏸ PAUSED
+          <span className="inline-flex items-center gap-2"><PixelIcon name="pause" size={20} /> PAUSED</span>
         </div>
         <p className="text-center text-[8px] leading-[15px] text-white/75">
           The siege holds its breath - enemies, turrets and arrows all wait for you.
         </p>
-        <PixButton color="#4caf50" onClick={onResume}>▶ RESUME</PixButton>
-        <PixButton color="#d9433b" small onClick={onMainMenu}>⌂ MAIN MENU</PixButton>
+        <PixButton color="#4caf50" onClick={onResume}><span className="inline-flex items-center gap-2"><PixelIcon name="play" size={18} /> RESUME</span></PixButton>
+        <PixButton color="#d9433b" small onClick={onMainMenu}><span className="inline-flex items-center gap-2"><PixelIcon name="exit" size={17} /> MAIN MENU</span></PixButton>
       </div>
     </div>
   );
@@ -39,7 +49,7 @@ export function ConfirmQuitOverlay({ onKeepDefending, onQuitToMenu }: {
     >
       <div className="scrollbox flex w-full min-w-0 max-w-[390px] max-h-full flex-col items-center gap-3 overflow-x-hidden overflow-y-auto border-4 border-black bg-[#1c2138] p-3 sm:p-4">
         <div className="text-center text-[12px] text-[#ff8fa3]" style={{ textShadow: "0 2px 0 #000" }}>
-          ⚠ LEAVE THIS RUN?
+          <span className="inline-flex items-center gap-2"><PixelIcon name="warning" size={20} /> LEAVE THIS RUN?</span>
         </div>
         <p className="text-center text-[8px] leading-[15px] text-white/80">
           Quitting to the main menu will lose your current run - score, gold, upgrades
@@ -84,16 +94,10 @@ export function ArmoryOverlay({ meta, buyMeta, onClose }: {
             return (
               <UpgradeCard
                 key={upgrade.key}
-                icon={
-                  upgrade.key === "walls" ? "⛨" :
-                  upgrade.key === "fletcher" ? "➤" :
-                  upgrade.key === "longbow" ? "➶" :
-                  upgrade.key === "eagle" ? "✦" :
-                  upgrade.key === "chest" ? "⛁" : "⟠"
-                }
-                name={`${upgrade.name} - ${"●".repeat(level)}${"○".repeat(upgrade.costs.length - level)}`}
+                icon={<PixelIcon name={ARMORY_ICONS[upgrade.key] || "gear"} size={20} />}
+                name={`${upgrade.name} - LEVEL ${level}/${upgrade.costs.length}`}
                 desc={upgrade.desc}
-                cost={`${cost}◆`}
+                cost={`${cost} META GOLD`}
                 action="UPGRADE"
                 disabled={meta.gold < cost}
                 done={maxed ? "MAXED" : undefined}
