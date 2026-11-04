@@ -4,6 +4,15 @@ import { SPRITES } from "../../../game/sprites";
 import { PixButton } from "../../../components/PixButton";
 import { PixelSprite } from "../../../components/PixelSprite";
 import { UpgradeCard } from "../../../components/UpgradeCard";
+import { PixelIcon, type PixelIconName } from "../../../components/PixelIcon";
+
+const TOWN_ICONS: Record<TownKey, PixelIconName> = {
+  townMine: "coin",
+  townBeacon: "star",
+  townMoat: "shield",
+  townCata: "turret",
+  townBarracks: "blade",
+};
 
 interface CourtyardOverlayProps {
   meta: Meta;
@@ -25,12 +34,12 @@ export function CourtyardOverlay({ meta, selectedTown, onSelectTown, onBuyTown, 
         style={{ background: "#1c2138" }}
       >
         <div className="text-[#ffd24a] text-[12px]" style={{ textShadow: "0 2px 0 #000" }}>
-          🏚 THE COURTYARD
+          <span className="inline-flex items-center gap-2"><PixelIcon name="town" size={20} /> THE COURTYARD</span>
         </div>
         <div className="text-[8px] text-white/75 text-center leading-[15px]">
-          Your town lives inside the castle walls. Buildings survive every defeat.
+          Build inside the castle walls. Structures survive every defeat.
         </div>
-        <div className="text-[9px] text-[#ffd24a]">⛁ {meta.gold} META GOLD</div>
+        <div className="inline-flex items-center gap-1 text-[9px] text-[#ffd24a]"><PixelIcon name="coin" size={15} /> {meta.gold} META GOLD</div>
         <div className="text-[8px] text-[#7be58e] text-center leading-[14px]">{TOWN_BLDGS.filter((b) => meta[b.key] > 0).length}/{TOWN_BLDGS.length} STRUCTURES BUILT</div>
 
         {/* the courtyard scene: walled yard, keep at the top, building plots */}
@@ -111,9 +120,7 @@ export function CourtyardOverlay({ meta, selectedTown, onSelectTown, onBuyTown, 
                   </>
                 ) : (
                   <>
-                    <span className="text-[12px] leading-[14px] opacity-70">
-                      {b.icon}
-                    </span>
+                    <PixelIcon name={TOWN_ICONS[b.key]} size={19} />
                     <span className="text-[7px] text-white/90 leading-[10px] text-center break-words">
                       {b.name}
                     </span>
@@ -141,14 +148,14 @@ export function CourtyardOverlay({ meta, selectedTown, onSelectTown, onBuyTown, 
             const cost = def.base * Math.pow(2, lvl);
             return (
               <UpgradeCard
-                icon={def.icon}
-                name={`${def.name} — ${"●".repeat(lvl)}${"○".repeat(4 - lvl)}`}
+                icon={<PixelIcon name={TOWN_ICONS[def.key]} size={20} />}
+                name={`${def.name} - LEVEL ${lvl}/4`}
                 desc={
                   lvl > 0
                     ? `Now: ${def.fx(lvl)}${maxed ? "." : `. Next: ${def.fx(lvl + 1)}.`} ${def.desc}`
                     : `${def.desc} ${def.fx(1)}.`
                 }
-                cost={maxed ? "" : `${cost}◆`}
+                cost={maxed ? "" : `${cost} META GOLD`}
                 disabled={maxed || meta.gold < cost}
                 done={maxed ? "MAXED" : undefined}
                 action={lvl > 0 ? "UPGRADE" : "BUILD"}
