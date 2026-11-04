@@ -99,6 +99,14 @@ The screen component is **still large** and includes menu orchestration, combat 
 - Shared `UpgradeCard` uses a non-shrinking vertical card and separate footer for the price and action. This prevents shop cards collapsing against adjacent cards on short phone screens.
 - Tests check the select/buy separation, icon data and mobile card layout. Manually check the ruby packs, perks, and upgrade level changes on a real device.
 
+## Menu icon consistency (P6)
+
+- The existing `PixelIcon` renderer now serves both in-run upgrades and the other menu screens. The icons are original 8x8 colored-pixel patterns rendered as crisp SVG cells; no external emoji fonts or image assets are needed.
+- `UpgradeCard.icon` now accepts a React node instead of only a string. The shop, armory, courtyard and settings use it to render the same pixel-icon style.
+- Main-menu and in-game HUD menu actions, permanent shop packs and perks, town plots, help instructions, settings/privacy, pause and quit panels use custom icons. Combat feedback and domain metadata are otherwise unchanged.
+- Purchase callbacks, disabled buttons, tab selection, saved progression and gameplay rules are unchanged. The phone card structure from P5 is preserved.
+- Regression tests render the affected panels and validate their icon patterns and menu content. Device screenshots should still be checked for subjective scale and spacing.
+
 ## Changes requiring care
 
 - Any future save-key or schema changes must preserve existing progress and be tested as migrations.
